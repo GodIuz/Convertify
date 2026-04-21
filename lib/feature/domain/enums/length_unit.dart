@@ -1,0 +1,16 @@
+enum LengthUnit {
+  meter,
+  kilometer,
+  decimeter,
+  millimeter,
+  centimeter,
+  inch,
+  foot,
+  yard,
+  mile,
+  nauticalMile,
+  micrometer,
+  nanometer,
+  astronomicalUnit,
+  lightYear,
+}
