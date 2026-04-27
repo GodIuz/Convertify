@@ -1,46 +1,27 @@
 import 'package:convertify/core/utils/number_formatter.dart';
-import 'package:convertify/feature/domain/enums/digital%20_unit.dart';
-import 'package:convertify/feature/domain/extensions/digital_unit_extension.dart';
-import 'package:convertify/feature/domain/services/converter_digital_service.dart';
+import 'package:convertify/feature/domain/enums/area_unit.dart';
+import 'package:convertify/feature/domain/extensions/area_unit_extension.dart';
+import 'package:convertify/feature/domain/services/converter_area_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class ConverterDigitalScreen extends StatefulWidget {
-  const ConverterDigitalScreen({super.key});
-
-  @override
-  State<ConverterDigitalScreen> createState() => _ConverterDigitalScreenState();
+class ConverterAreaScreen  extends StatefulWidget{
+  const ConverterAreaScreen({super.key});
+  State<ConverterAreaScreen> createState() => _ConverterAreaConverterState();
 }
 
-class _ConverterDigitalScreenState extends State<ConverterDigitalScreen> {
+class _ConverterAreaConverterState extends State<ConverterAreaScreen>{
   final _controller = TextEditingController();
-  final _service = ConverterDigitalService();
+  final _service = ConverterAreaService();
 
-  DigitalUnit from = DigitalUnit.megabyte;
-  DigitalUnit to = DigitalUnit.gigabyte;
+  AreaUnit from = AreaUnit.sq_meter;
+  AreaUnit to = AreaUnit.sq_km;
   double result = 0;
-
-  void convert() {
-    final value = double.tryParse(_controller.text) ?? 0;
-    setState(() {
-      result = _service.convertDigital(value: value, from: from, to: to);
-    });
-  }
-
-  void swapUnits() {
-    HapticFeedback.lightImpact();
-    setState(() {
-      final temp = from;
-      from = to;
-      to = temp;
-    });
-    convert();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Digital Storage"), centerTitle: true),
+      appBar: AppBar(title: const Text("Area Converter"), centerTitle: true),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -116,17 +97,34 @@ class _ConverterDigitalScreenState extends State<ConverterDigitalScreen> {
     );
   }
 
-  Widget _buildDropdown(DigitalUnit value, Function(DigitalUnit) onChanged) {
+  Widget _buildDropdown(AreaUnit value, Function(AreaUnit) onChanged) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Theme.of(context).colorScheme.surfaceContainer),
-      child: DropdownButton<DigitalUnit>(
+      child: DropdownButton<AreaUnit>(
         value: value,
         isExpanded: true,
         underline: const SizedBox(),
-        items: DigitalUnit.values.map((unit) => DropdownMenuItem(value: unit, child: Text(unit.label))).toList(),
+        items: AreaUnit.values.map((unit) => DropdownMenuItem(value: unit, child: Text(unit.label))).toList(),
         onChanged: (val) => onChanged(val!),
       ),
     );
+  }
+
+  void convert() {
+    final value = double.tryParse(_controller.text) ?? 0;
+    setState(() {
+      result = _service.convertArea(value: value, from: from, to: to);
+    });
+  }
+
+  void swapUnits() {
+    HapticFeedback.lightImpact();
+    setState(() {
+      final area  = from;
+      from = to;
+      to = area;
+    });
+    convert();
   }
 }

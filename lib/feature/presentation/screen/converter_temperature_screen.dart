@@ -85,7 +85,6 @@ class _ConverterTemperatureScreenState extends State<ConverterTemperatureScreen>
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            // Input Container (Σύμφωνα με το στυλ σου)
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -101,7 +100,6 @@ class _ConverterTemperatureScreenState extends State<ConverterTemperatureScreen>
               ),
             ),
             const SizedBox(height: 24),
-            // Selectors + Swap
             Row(
               children: [
                 Expanded(child: _buildDropdown(from, (val) {

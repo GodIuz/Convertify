@@ -1,8 +1,10 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:convertify/feature/domain/services/converter_time_service.dart';
+import 'package:convertify/feature/presentation/screen/converter_area_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_digital_screen.dart';
+import 'package:convertify/feature/presentation/screen/converter_pressure_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_speed_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_time_screen.dart';
+import 'package:convertify/feature/presentation/screen/converter_volume_screen.dart';
 
 import 'converter_metric_screen.dart';
 import 'converter_temperature_screen.dart';
@@ -83,17 +85,20 @@ class HomeScreen extends StatelessWidget {
             _CategoryCard(
                 title: "Area",
                 icon: Icons.area_chart,
-                color: Colors.lime
-            ),
-            _CategoryCard(
-                title: "Speed",
-                icon: Icons.speed,
-                color: Colors.cyanAccent
+                color: Colors.lime,
+                screen: ConverterAreaScreen(),
             ),
             _CategoryCard(
                 title: "Volume",
                 icon: Icons.volcano,
-                color: Colors.blueGrey
+                color: Colors.blueGrey,
+                screen: ConverterVolumeScreen(),
+            ),
+            _CategoryCard(
+                title: "Pressure",
+                icon: Icons.price_check,
+                color: Colors.pinkAccent,
+                screen: ConverterPressureScreen()
             )
           ],
         ),

@@ -22,7 +22,7 @@ class _TimeConverterScreenState extends State<TimeConverterScreen> {
   @override
   void initState() {
     super.initState();
-    _convert(); // Αρχικός υπολογισμός
+    _convert();
   }
 
   void _convert() {
@@ -39,7 +39,6 @@ class _TimeConverterScreenState extends State<TimeConverterScreen> {
     );
 
     setState(() {
-      // Enterprise Tip: Χρήση Scientific Notation για πολύ μικρούς/μεγάλους αριθμούς
       if (conversion < 0.0001 || conversion > 1000000) {
         _result = conversion.toStringAsPrecision(4);
       } else {
@@ -55,15 +54,15 @@ class _TimeConverterScreenState extends State<TimeConverterScreen> {
       _toUnit = temp;
     });
     _convert();
-    HapticFeedback.mediumImpact(); // Enterprise αίσθηση με haptics
+    HapticFeedback.mediumImpact();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0B0B10), // Το dark background μας
+      backgroundColor: const Color(0xFF0B0B10),
       appBar: AppBar(
-        title: const Text("Time Converter Pro", style: TextStyle(color: Colors.cyanAccent, fontWeight: FontWeight.bold)),
+        title: const Text("Time Converter", style: TextStyle(color: Colors.cyanAccent, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
@@ -72,7 +71,6 @@ class _TimeConverterScreenState extends State<TimeConverterScreen> {
         padding: const EdgeInsets.all(24.0),
         child: Column(
           children: [
-            // --- INPUT CARD ---
             _buildUnitCard("From", _fromUnit, (val) {
               setState(() => _fromUnit = val!);
               _convert();
