@@ -18,12 +18,10 @@ class _ConverterMetricScreenState extends State<ConverterMetricScreen>  {
 
   LengthUnit from = LengthUnit.meter;
   LengthUnit to = LengthUnit.kilometer;
-
   double result = 0;
 
   void convert() {
     final value = double.tryParse(_controller.text) ?? 0;
-
     setState(() {
       result = _service.convertLength(
         value: value,
@@ -35,13 +33,11 @@ class _ConverterMetricScreenState extends State<ConverterMetricScreen>  {
 
   void swapUnits() {
     HapticFeedback.lightImpact();
-
     setState(() {
       final temp = from;
       from = to;
       to = temp;
     });
-
     convert();
   }
 
@@ -75,7 +71,6 @@ class _ConverterMetricScreenState extends State<ConverterMetricScreen>  {
             ),
 
             const SizedBox(height: 24),
-
             Row(
               children: [
                 Expanded(child: _buildDropdown(from, (val) {
@@ -83,9 +78,7 @@ class _ConverterMetricScreenState extends State<ConverterMetricScreen>  {
                   setState(() => from = val);
                   convert();
                 })),
-
                 const SizedBox(width: 12),
-
                 GestureDetector(
                   onTap: swapUnits,
                   child: Container(
@@ -97,9 +90,7 @@ class _ConverterMetricScreenState extends State<ConverterMetricScreen>  {
                     child: const Icon(Icons.swap_vert),
                   ),
                 ),
-
                 const SizedBox(width: 12),
-
                 Expanded(child: _buildDropdown(to, (val) {
                   HapticFeedback.selectionClick();
                   setState(() => to = val);
@@ -109,7 +100,6 @@ class _ConverterMetricScreenState extends State<ConverterMetricScreen>  {
             ),
 
             const SizedBox(height: 32),
-
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(24),
@@ -127,13 +117,9 @@ class _ConverterMetricScreenState extends State<ConverterMetricScreen>  {
                 children: [
                   const Text(
                     "Result",
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 16,
-                    ),
+                    style: TextStyle(color: Colors.white70, fontSize: 16),
                   ),
                   const SizedBox(height: 8),
-
                   Text(
                     "${NumberFormatter.format(result)} ${to.label}",
                     style: const TextStyle(
@@ -147,7 +133,6 @@ class _ConverterMetricScreenState extends State<ConverterMetricScreen>  {
             ),
 
             const Spacer(),
-
             Text(
               "${from.label} → ${to.label}",
               style: TextStyle(
@@ -160,10 +145,7 @@ class _ConverterMetricScreenState extends State<ConverterMetricScreen>  {
     );
   }
 
-  Widget _buildDropdown(
-      LengthUnit value,
-      Function(LengthUnit) onChanged,
-      ) {
+  Widget _buildDropdown(LengthUnit value, Function(LengthUnit) onChanged) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(

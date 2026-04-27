@@ -1,9 +1,9 @@
+import 'package:convertify/core/utils/number_formatter.dart';
+import 'package:convertify/feature/domain/enums/digital%20_unit.dart';
+import 'package:convertify/feature/domain/extensions/digital_unit_extension.dart';
+import 'package:convertify/feature/domain/services/converter_digital_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../core/utils/number_formatter.dart';
-import '../../domain/enums/digital _unit.dart';
-import '../../domain/extensions/digital_unit_extension.dart';
-import '../../domain/services/converter_digital_service.dart';
 
 class ConverterDigitalScreen extends StatefulWidget {
   const ConverterDigitalScreen({super.key});

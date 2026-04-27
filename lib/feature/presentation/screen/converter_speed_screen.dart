@@ -1,9 +1,9 @@
+import 'package:convertify/core/utils/number_formatter.dart';
+import 'package:convertify/feature/domain/enums/speed_unit.dart';
+import 'package:convertify/feature/domain/extensions/speed_unit_extension.dart';
 import 'package:convertify/feature/domain/services/converter_speed_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../core/utils/number_formatter.dart';
-import '../../domain/enums/speed_unit.dart';
-import '../../domain/extensions/speed_unit_extension.dart';
 
 class ConverterSpeedScreen extends StatefulWidget {
   const ConverterSpeedScreen({super.key});
@@ -45,7 +45,6 @@ class _ConverterSpeedScreenState extends State<ConverterSpeedScreen> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            /// 🔢 INPUT
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -63,7 +62,6 @@ class _ConverterSpeedScreenState extends State<ConverterSpeedScreen> {
 
             const SizedBox(height: 24),
 
-            /// 🔄 SELECTORS
             Row(
               children: [
                 Expanded(child: _buildDropdown(from, (val) {
@@ -89,7 +87,6 @@ class _ConverterSpeedScreenState extends State<ConverterSpeedScreen> {
 
             const SizedBox(height: 32),
 
-            /// 📊 RESULT (Χρήση SpeedUnitExtensions)
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(24),

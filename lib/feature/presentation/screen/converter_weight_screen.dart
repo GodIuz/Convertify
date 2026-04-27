@@ -1,9 +1,9 @@
+import 'package:convertify/core/utils/number_formatter.dart';
+import 'package:convertify/feature/domain/enums/weight_unit.dart';
+import 'package:convertify/feature/domain/extensions/weight_unit_extension.dart';
 import 'package:convertify/feature/domain/services/converter_weight_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../core/utils/number_formatter.dart';
-import '../../domain/enums/weight_unit.dart';
-import '../../domain/extensions/weight_unit_extension.dart';
 
 class ConverterWeightScreen extends StatefulWidget {
   const ConverterWeightScreen({super.key});
@@ -15,6 +15,7 @@ class ConverterWeightScreen extends StatefulWidget {
 class _ConverterWeightScreenState extends State<ConverterWeightScreen> {
   final _controller = TextEditingController();
   final _service = ConverterWeightService();
+
 
   WeightUnit from = WeightUnit.kilogram;
   WeightUnit to = WeightUnit.pound;
@@ -39,6 +40,7 @@ class _ConverterWeightScreenState extends State<ConverterWeightScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(title: const Text("Weight Converter"), centerTitle: true),
       body: Padding(
