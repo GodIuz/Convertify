@@ -49,7 +49,7 @@ flutter_launcher_icons:
   image_path: "assets/images/app_icon.png"
 
 flutter_native_splash:
-  color: "#0B0B10" # Το dark background της εφαρμογής σου
+  color: "#0B0B10"
   image: "assets/images/splash_logo.png"
   android_12:
     image: "assets/images/splash_logo.png"

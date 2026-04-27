@@ -1,4 +1,4 @@
-import 'package:convertify/feature/presentation/screen/home_screen.dart';
+import 'package:convertify/feature/presentation/screen/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'core/theme/app_theme.dart';
 
@@ -13,9 +13,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Convertify',
-      theme: AppTheme.dark,
-      home: const HomeScreen(),
       debugShowCheckedModeBanner: false,
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: const Color(0xFF0B0B10),
+      ),
+      home: const MainScreen(),
     );
   }
 }
