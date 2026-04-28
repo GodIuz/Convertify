@@ -1,6 +1,5 @@
 import 'package:convertify/feature/presentation/screen/main_screen.dart';
 import 'package:flutter/material.dart';
-import 'core/theme/app_theme.dart';
 
 void main() {
   runApp(const MyApp());

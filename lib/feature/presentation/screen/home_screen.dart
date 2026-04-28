@@ -1,11 +1,17 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:convertify/feature/domain/services/converter_fuel_economy_service.dart';
+import 'package:convertify/feature/presentation/screen/converter_angel_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_area_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_digital_screen.dart';
+import 'package:convertify/feature/presentation/screen/converter_energy_screen.dart';
+import 'package:convertify/feature/presentation/screen/converter_force_screen.dart';
+import 'package:convertify/feature/presentation/screen/converter_frequency_screen.dart';
+import 'package:convertify/feature/presentation/screen/converter_fuel_economy_screen.dart';
+import 'package:convertify/feature/presentation/screen/converter_power_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_pressure_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_speed_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_time_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_volume_screen.dart';
-
 import 'converter_metric_screen.dart';
 import 'converter_temperature_screen.dart';
 import 'package:flutter/material.dart';
@@ -84,21 +90,57 @@ class HomeScreen extends StatelessWidget {
             ),
             _CategoryCard(
                 title: "Area",
-                icon: Icons.area_chart,
+                icon: Icons.crop_square,
                 color: Colors.lime,
                 screen: ConverterAreaScreen(),
             ),
             _CategoryCard(
                 title: "Volume",
-                icon: Icons.volcano,
+                icon: Icons.local_drink,
                 color: Colors.blueGrey,
                 screen: ConverterVolumeScreen(),
             ),
             _CategoryCard(
                 title: "Pressure",
-                icon: Icons.price_check,
+                icon: Icons.compress,
                 color: Colors.pinkAccent,
                 screen: ConverterPressureScreen()
+            ),
+            _CategoryCard(
+                title: "Energy",
+                icon: Icons.energy_savings_leaf,
+                color: Colors.lime,
+                screen: ConverterEnergyScreen(),
+            ),
+            _CategoryCard(
+                title: "Power",
+                icon: Icons.power,
+                color: Colors.blue,
+                screen: ConverterPowerScreen(),
+            ),
+            _CategoryCard(
+                title: "Angle",
+                icon: Icons.change_history,
+                color: Colors.green,
+                screen: ConverterAngleScreen(),
+            ),
+            _CategoryCard(
+                title: "Fuel Economy",
+                icon: Icons.local_gas_station,
+                color: Colors.indigo,
+                screen: ConverterFuelScreen(),
+            ),
+            _CategoryCard(
+                title: "Frequency",
+                icon: Icons.graphic_eq,
+                color: Colors.pink,
+                screen: ConverterFrequencyScreen(),
+            ),
+            _CategoryCard(
+                title: "Force",
+                icon: Icons.sports_martial_arts,
+                color: Colors.yellowAccent,
+                screen: ConverterForceScreen()
             )
           ],
         ),
@@ -106,6 +148,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
 class _CategoryCard extends StatelessWidget {
   final String title;
   final IconData icon;

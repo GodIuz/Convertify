@@ -4,23 +4,23 @@ extension TimeUnitExtension on TimeUnit{
   String get label{
     switch (this){
       case TimeUnit.seconds:
-        return "Seconds (s)";
+        return "Seconds";
       case TimeUnit.milliseconds:
-        return "Milliseconds (ms)";
+        return "Milliseconds";
       case TimeUnit.microseconds:
-        return "Microseconds (μs)";
+        return "Microseconds";
       case TimeUnit.nanoseconds:
-        return "Nanoseconds (ns)";
+        return "Nanoseconds";
       case TimeUnit.picoseconds:
-        return "Picoseconds (ps)";
+        return "Picoseconds";
       case TimeUnit.minute:
-        return "Minutes (m)";
+        return "Minutes";
       case TimeUnit.hour:
-        return "Hours (h)";
+        return "Hours";
       case TimeUnit.day:
-        return "Days (d)";
+        return "Days";
       case TimeUnit.week:
-        return "Week (w)";
+        return "Week";
       case TimeUnit.fortnight:
         return "Fortnights";
       case TimeUnit.month:
