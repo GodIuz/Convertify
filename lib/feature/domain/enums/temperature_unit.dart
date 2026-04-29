@@ -3,5 +3,8 @@ enum TemperatureUnit {
   fahrenheit,
   kelvin,
   rankine,
-  reaumur
+  reaumur,
+  delisle,
+  newton,
+  romer
 }

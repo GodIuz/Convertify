@@ -1,25 +1,23 @@
-
-
 import 'package:convertify/core/utils/number_formatter.dart';
-import 'package:convertify/feature/domain/enums/temperature_unit.dart';
-import 'package:convertify/feature/domain/extensions/temperature_unit_extension.dart';
-import 'package:convertify/feature/domain/services/converter_temperature_service.dart';
+import 'package:convertify/feature/domain/enums/torque_unit.dart';
+import 'package:convertify/feature/domain/extensions/torque_unit_extension.dart';
+import 'package:convertify/feature/domain/services/converter_torque_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class ConverterTemperatureScreen extends StatefulWidget {
-  const ConverterTemperatureScreen({super.key});
+class ConverterTorqueScreen extends StatefulWidget {
+  const ConverterTorqueScreen({super.key});
 
   @override
-  State<ConverterTemperatureScreen> createState() => _ConverterTemperatureScreenState();
+  State<ConverterTorqueScreen> createState() => _ConverterTorqueScreenState();
 }
 
-class _ConverterTemperatureScreenState extends State<ConverterTemperatureScreen> {
-  final _controller = TextEditingController(text: "25");
-  final _service = ConverterTemperatureService();
+class _ConverterTorqueScreenState extends State<ConverterTorqueScreen> {
+  final _controller = TextEditingController(text: "100"); // 100 Nm είναι μια καλή τιμή αναφοράς
+  final _service = ConverterTorqueService();
 
-  TemperatureUnit from = TemperatureUnit.celsius;
-  TemperatureUnit to = TemperatureUnit.fahrenheit;
+  TorqueUnit from = TorqueUnit.nm_torque;
+  TorqueUnit to = TorqueUnit.ftlb_torque;
   double result = 0;
 
   @override
@@ -32,18 +30,18 @@ class _ConverterTemperatureScreenState extends State<ConverterTemperatureScreen>
     final text = _controller.text.trim().replaceAll(',', '.');
     final value = double.tryParse(text) ?? 0;
     setState(() {
-      result = _service.convertTemperature(value: value, from: from, to: to);
+      result = _service.convertTorque(value: value, from: from, to: to);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    const tempOrange = Color(0xFFFF9800);
+    const torqueRed = Color(0xFFD50000);
 
     return Scaffold(
       backgroundColor: const Color(0xFF0B0B10),
       appBar: AppBar(
-        title: const Text("Temperature", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text("Torque Converter", style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
@@ -51,15 +49,18 @@ class _ConverterTemperatureScreenState extends State<ConverterTemperatureScreen>
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            _buildInputCard(tempOrange),
+            _buildInputCard(torqueRed),
             const SizedBox(height: 20),
             Row(
               children: [
                 Expanded(child: _buildDropdown(from, (val) {
                   setState(() => from = val);
                   _convert();
-                }, tempOrange)),
-                const Icon(Icons.thermostat, color: tempOrange, size: 30),
+                }, torqueRed)),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Icon(Icons.settings_input_component, color: torqueRed, size: 28),
+                ),
                 Expanded(child: _buildDropdown(to, (val) {
                   setState(() => to = val);
                   _convert();
@@ -67,12 +68,13 @@ class _ConverterTemperatureScreenState extends State<ConverterTemperatureScreen>
               ],
             ),
             const SizedBox(height: 30),
-            _buildResultCard(tempOrange),
+            _buildResultCard(torqueRed),
           ],
         ),
       ),
     );
   }
+
   Widget _buildInputCard(Color accentColor) {
     return Container(
       padding: const EdgeInsets.all(20),
@@ -105,7 +107,7 @@ class _ConverterTemperatureScreenState extends State<ConverterTemperatureScreen>
     );
   }
 
-  Widget _buildDropdown(TemperatureUnit value, Function(TemperatureUnit) onChanged, Color color) {
+  Widget _buildDropdown(TorqueUnit value, Function(TorqueUnit) onChanged, Color color) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
@@ -114,12 +116,12 @@ class _ConverterTemperatureScreenState extends State<ConverterTemperatureScreen>
         border: Border.all(color: color.withOpacity(0.2)),
       ),
       child: DropdownButtonHideUnderline(
-        child: DropdownButton<TemperatureUnit>(
+        child: DropdownButton<TorqueUnit>(
           value: value,
           isExpanded: true,
           dropdownColor: const Color(0xFF1A1A25),
           icon: Icon(Icons.keyboard_arrow_down, color: color),
-          items: TemperatureUnit.values.map((unit) => DropdownMenuItem(
+          items: TorqueUnit.values.map((unit) => DropdownMenuItem(
             value: unit,
             child: Text(unit.label,
                 overflow: TextOverflow.ellipsis,

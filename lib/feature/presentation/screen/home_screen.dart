@@ -11,6 +11,7 @@ import 'package:convertify/feature/presentation/screen/converter_power_screen.da
 import 'package:convertify/feature/presentation/screen/converter_pressure_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_speed_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_time_screen.dart';
+import 'package:convertify/feature/presentation/screen/converter_torque_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_volume_screen.dart';
 import 'converter_metric_screen.dart';
 import 'converter_temperature_screen.dart';
@@ -141,7 +142,14 @@ class HomeScreen extends StatelessWidget {
                 icon: Icons.sports_martial_arts,
                 color: Colors.yellowAccent,
                 screen: ConverterForceScreen()
-            )
+            ),
+            _CategoryCard(
+                title: "Torque",
+                icon: Icons.settings,
+                color: Colors.amberAccent,
+                screen: ConverterTorqueScreen(),
+            ),
+
           ],
         ),
       ),

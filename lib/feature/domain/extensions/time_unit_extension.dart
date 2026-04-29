@@ -4,37 +4,37 @@ extension TimeUnitExtension on TimeUnit{
   String get label{
     switch (this){
       case TimeUnit.seconds:
-        return "Seconds";
+        return "Seconds (s)";
       case TimeUnit.milliseconds:
-        return "Milliseconds";
+        return "Milliseconds (ms)";
       case TimeUnit.microseconds:
-        return "Microseconds";
+        return "Microseconds (μs)";
       case TimeUnit.nanoseconds:
-        return "Nanoseconds";
+        return "Nanoseconds (ns)";
       case TimeUnit.picoseconds:
-        return "Picoseconds";
+        return "Picoseconds (ps)";
       case TimeUnit.minute:
-        return "Minutes";
+        return "Minutes (m)";
       case TimeUnit.hour:
-        return "Hours";
+        return "Hours (h)";
       case TimeUnit.day:
-        return "Days";
+        return "Days (d)";
       case TimeUnit.week:
-        return "Week";
+        return "Week (d)";
       case TimeUnit.fortnight:
-        return "Fortnights";
+        return "Fortnights (fn)";
       case TimeUnit.month:
-        return "Months";
+        return "Months (mo)";
       case TimeUnit.quarter:
-        return "Quarter";
+        return "Quarter (qtr)";
       case TimeUnit.year:
-        return "Years";
+        return "Years (yr)";
       case TimeUnit.decade:
-        return "Decades";
+        return "Decades (dec)";
       case TimeUnit.century:
-        return "Centuries";
+        return "Centuries (c)";
       case TimeUnit.millennium:
-        return "Millennium";
+        return "Millennium (mil)";
     }
   }
 }

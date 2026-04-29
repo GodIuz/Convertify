@@ -4,31 +4,31 @@ extension AreaUnitExtension on AreaUnit{
   String get label {
     switch (this) {
       case AreaUnit.sq_meter:
-        return "Square Meter";
+        return "Square Meter (m²)";
       case AreaUnit.sq_km:
-        return "Square Kilometer";
+        return "Square Kilometer (km²)";
       case AreaUnit.sq_cm:
-        return "Square Centimeter";
+        return "Square Centimeter (cm²)";
       case AreaUnit.sq_mm:
-        return "Square Millimeter";
+        return "Square Millimeter (mm²)";
       case AreaUnit.sq_mile:
-        return "Square Mile";
+        return "Square Mile (mi²)";
       case AreaUnit.sq_yard:
-          return "Square Yard";
+          return "Square Yard (yd²)";
       case AreaUnit.sq_foot:
-        return "Square Foot";
+        return "Square Foot (ft²)";
       case AreaUnit.sq_inch:
-        return "Square Inch";
+        return "Square Inch (in²)";
       case AreaUnit.acre:
-        return "Acre";
+        return "Acre (ac)";
       case AreaUnit.hectare:
-      return "Hectare";
+      return "Hectare (ha)";
       case AreaUnit.sq_furlong:
-        return "Square Furlong";
+        return "Square Furlong (fur²)";
       case AreaUnit.township:
-        return "Township";
+        return "Township (twp";
       case AreaUnit.sq_light_sec:
-         return "Square Light Second";
+         return "Square Light Second (ls²)";
     }
   }
 }

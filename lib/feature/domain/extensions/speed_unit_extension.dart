@@ -9,8 +9,8 @@ extension SpeedUnitExtensions on SpeedUnit{
       case SpeedUnit.mph: return "Miles per hour (mph)";
       case SpeedUnit.fts: return "Feet per second (ft/s)";
       case SpeedUnit.ins: return "Inches per second (in/s)";
-      case SpeedUnit.knots: return "Knots";
-      case SpeedUnit.mach: return "Mach";
+      case SpeedUnit.knots: return "Knots (knot)";
+      case SpeedUnit.mach: return "Mach (Mach)";
       case SpeedUnit.speedlight: return "Speed of Light";
       case SpeedUnit.cms: return "Centimeters per second (cm/s)";
       case SpeedUnit.mms: return "Millimeter per seconds (mm/s)";

@@ -14,7 +14,7 @@ extension PressureUnitExtension on PressureUnit{
       case PressureUnit.barye:
         return "Barye (Ba)";
       case PressureUnit.bar:
-        return "Bar";
+        return "Bar (bar)";
       case PressureUnit.mbar:
         return "Millibar (mbar)";
       case PressureUnit.atmTech:
@@ -26,9 +26,9 @@ extension PressureUnitExtension on PressureUnit{
       case PressureUnit.psf:
         return "Pounds per sq foot (psf)";
       case PressureUnit.tonsPerSqInch:
-        return "Tons per sq inch";
+        return "Tons per sq inch (tsi)";
       case PressureUnit.tonsPerSqFoot:
-        return "Tons per sq foot";
+        return "Tons per sq foot (tsi)";
       case PressureUnit.ksi:
         return "Kilopounds per sq inch (ksi)";
       case PressureUnit.cmHg:
@@ -52,7 +52,7 @@ extension PressureUnitExtension on PressureUnit{
       case PressureUnit.inHg:
         return "Inches of Mercury (inHg)";
       case PressureUnit.torr:
-        return "Torr";
+        return "Torr (Torr)";
       case PressureUnit.dynePerCm2:
         return "Dyne per sq cm (dyn/cm²)";
     }
