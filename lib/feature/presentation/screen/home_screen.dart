@@ -162,6 +162,11 @@ class HomeScreen extends StatelessWidget {
                 color: Colors.tealAccent,
                 screen: FlowRateConverterScreen(),
             ),
+            _CategoryCard(
+                title: "Illuminance",
+                icon: Icons.wb_sunny,
+                color: Colors.red,
+            ),
           ],
         ),
       ),
