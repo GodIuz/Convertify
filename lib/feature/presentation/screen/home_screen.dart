@@ -46,111 +46,111 @@ class HomeScreen extends StatelessWidget {
           crossAxisCount: 2,
           mainAxisSpacing: 16,
           crossAxisSpacing: 16,
-          children: [
-            const _CategoryCard(
+          children: const [
+            _CategoryCard(
               title: "Length",
               icon: Icons.straighten,
               color: Colors.cyan,
               screen: ConverterMetricScreen()
             ),
-            const _CategoryCard(
+            _CategoryCard(
               title: "Weight",
               icon: Icons.monitor_weight,
               color: Colors.purple,
               screen: ConverterWeightScreen(),
             ),
-            const _CategoryCard(
+            _CategoryCard(
               title: "Temperature",
               icon: Icons.thermostat,
               color: Colors.orange,
               screen: ConverterTemperatureScreen(),
             ),
-            const _CategoryCard(
+            _CategoryCard(
               title: "Currency",
               icon: Icons.attach_money,
               color: Colors.green,
               requiresInternet: true,
               screen: ConverterCurrencyScreen()
             ),
-            const _CategoryCard(
+            _CategoryCard(
                 title: "Speed",
                 icon: Icons.speed,
                 color: Colors.tealAccent,
                screen: ConverterSpeedScreen(),
             ),
-            const _CategoryCard(
+            _CategoryCard(
                 title: "Storage",
                 icon: Icons.storage,
                 color: Colors.red,
                 screen: ConverterDigitalScreen(),
             ),
-            const _CategoryCard(
+            _CategoryCard(
                 title: "Time",
                 icon: Icons.timer,
                 color: Colors.brown,
                 screen: TimeConverterScreen(),
             ),
-            const _CategoryCard(
+            _CategoryCard(
                 title: "Area",
                 icon: Icons.crop_square,
                 color: Colors.lime,
                 screen: ConverterAreaScreen(),
             ),
-            const _CategoryCard(
+            _CategoryCard(
                 title: "Volume",
                 icon: Icons.local_drink,
                 color: Colors.blueGrey,
                 screen: ConverterVolumeScreen(),
             ),
-            const _CategoryCard(
+            _CategoryCard(
                 title: "Pressure",
                 icon: Icons.compress,
                 color: Colors.pinkAccent,
                 screen: ConverterPressureScreen()
             ),
-            const _CategoryCard(
+            _CategoryCard(
                 title: "Energy",
                 icon: Icons.energy_savings_leaf,
                 color: Colors.lime,
                 screen: ConverterEnergyScreen(),
             ),
-            const _CategoryCard(
+            _CategoryCard(
                 title: "Power",
                 icon: Icons.power,
                 color: Colors.blue,
                 screen: ConverterPowerScreen(),
             ),
-            const _CategoryCard(
+            _CategoryCard(
                 title: "Angle",
                 icon: Icons.change_history,
                 color: Colors.green,
                 screen: ConverterAngleScreen(),
             ),
-            const _CategoryCard(
+            _CategoryCard(
                 title: "Fuel Economy",
                 icon: Icons.local_gas_station,
                 color: Colors.indigo,
                 screen: ConverterFuelScreen(),
             ),
-            const _CategoryCard(
+            _CategoryCard(
                 title: "Frequency",
                 icon: Icons.graphic_eq,
                 color: Colors.pink,
                 screen: ConverterFrequencyScreen(),
             ),
-            const _CategoryCard(
+            _CategoryCard(
                 title: "Force",
                 icon: Icons.sports_martial_arts,
                 color: Colors.yellowAccent,
                 screen: ConverterForceScreen()
             ),
-            const _CategoryCard(
+            _CategoryCard(
                 title: "Torque",
                 icon: Icons.settings,
                 color: Colors.amberAccent,
                 screen: ConverterTorqueScreen(),
             ),
-            const _CategoryCard(
+            _CategoryCard(
                 title: "Density",
                 icon: Icons.layers, 
                 color: Colors.deepOrange,
@@ -160,7 +160,7 @@ class HomeScreen extends StatelessWidget {
                 title: "Flow Rate",
                 icon: Icons.water_drop,
                 color: Colors.tealAccent,
-                screen: ConverterFlowRateScreen(),
+                screen: FlowRateConverterScreen(),
             ),
           ],
         ),
