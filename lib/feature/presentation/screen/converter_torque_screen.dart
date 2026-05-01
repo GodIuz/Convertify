@@ -13,7 +13,7 @@ class ConverterTorqueScreen extends StatefulWidget {
 }
 
 class _ConverterTorqueScreenState extends State<ConverterTorqueScreen> {
-  final _controller = TextEditingController(text: "100"); // 100 Nm είναι μια καλή τιμή αναφοράς
+  final _controller = TextEditingController(text: "100");
   final _service = ConverterTorqueService();
 
   TorqueUnit from = TorqueUnit.nm_torque;

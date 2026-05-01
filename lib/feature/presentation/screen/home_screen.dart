@@ -1,5 +1,4 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:convertify/feature/domain/services/converter_fuel_economy_service.dart';
 import 'package:convertify/feature/presentation/screen/converter_angel_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_area_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_digital_screen.dart';
@@ -45,8 +44,8 @@ class HomeScreen extends StatelessWidget {
           crossAxisCount: 2,
           mainAxisSpacing: 16,
           crossAxisSpacing: 16,
-          children: [
-            const _CategoryCard(
+          children: const [
+            _CategoryCard(
               title: "Length",
               icon: Icons.straighten,
               color: Colors.cyan,
@@ -149,7 +148,6 @@ class HomeScreen extends StatelessWidget {
                 color: Colors.amberAccent,
                 screen: ConverterTorqueScreen(),
             ),
-
           ],
         ),
       ),
@@ -189,7 +187,7 @@ class _CategoryCard extends StatelessWidget {
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
-        onTap: () async { // ✅ Προσθέσαμε το async εδώ για το await
+        onTap: () async {
           if (requiresInternet) {
             var connectivityResult = await (Connectivity().checkConnectivity());
             if (connectivityResult.contains(ConnectivityResult.none)) {
@@ -237,7 +235,6 @@ class _CategoryCard extends StatelessWidget {
     );
   }
 
-  // ✅ Προσθέσαμε το BuildContext context ως παράμετρο
   void _showNoInternetDialog(BuildContext context) {
     showDialog(
       context: context,

@@ -1,5 +1,3 @@
-
-
 import 'package:convertify/core/utils/number_formatter.dart';
 import 'package:convertify/feature/domain/enums/temperature_unit.dart';
 import 'package:convertify/feature/domain/extensions/temperature_unit_extension.dart';
