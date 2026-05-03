@@ -1,28 +1,29 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:convertify/feature/presentation/screen/converter_angel_screen.dart';
-import 'package:convertify/feature/presentation/screen/converter_area_screen.dart';
-import 'package:convertify/feature/presentation/screen/converter_cooking_screen.dart';
-import 'package:convertify/feature/presentation/screen/converter_density_screen.dart';
-import 'package:convertify/feature/presentation/screen/converter_digital_screen.dart';
-import 'package:convertify/feature/presentation/screen/converter_energy_screen.dart';
-import 'package:convertify/feature/presentation/screen/converter_flow_rate_screen.dart';
-import 'package:convertify/feature/presentation/screen/converter_force_screen.dart';
-import 'package:convertify/feature/presentation/screen/converter_frequency_screen.dart';
-import 'package:convertify/feature/presentation/screen/converter_fuel_economy_screen.dart';
-import 'package:convertify/feature/presentation/screen/converter_illuminance_screen.dart';
-import 'package:convertify/feature/presentation/screen/converter_power_screen.dart';
-import 'package:convertify/feature/presentation/screen/converter_pressure_screen.dart';
-import 'package:convertify/feature/presentation/screen/converter_speed_screen.dart';
-import 'package:convertify/feature/presentation/screen/converter_time_screen.dart';
-import 'package:convertify/feature/presentation/screen/converter_torque_screen.dart';
-import 'package:convertify/feature/presentation/screen/converter_volume_screen.dart';
-import 'package:convertify/feature/presentation/screen/trigonometry_screen.dart';
-import 'package:convertify/feature/presentation/screen/converter_radiation_screen.dart';
+import 'converter_angel_screen.dart';
+import 'converter_area_screen.dart';
+import 'converter_cooking_screen.dart';
+import 'converter_density_screen.dart';
+import 'converter_digital_screen.dart';
+import 'converter_energy_screen.dart';
+import 'converter_flow_rate_screen.dart';
+import 'converter_force_screen.dart';
+import 'converter_frequency_screen.dart';
+import 'converter_fuel_economy_screen.dart';
+import 'converter_illuminance_screen.dart';
+import 'converter_power_screen.dart';
+import 'converter_pressure_screen.dart';
+import 'converter_speed_screen.dart';
+import 'converter_time_screen.dart';
+import 'converter_torque_screen.dart';
+import 'converter_volume_screen.dart';
+import 'trigonometry_screen.dart';
+import 'converter_radiation_screen.dart';
 import 'converter_metric_screen.dart';
 import 'converter_temperature_screen.dart';
 import 'package:flutter/material.dart';
 import 'converter_currency_screen.dart';
 import 'converter_weight_screen.dart';
+import 'converter_numeral_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -189,6 +190,22 @@ class HomeScreen extends StatelessWidget {
                 icon: Icons.architecture,
                 color: Colors.tealAccent,
                 screen: TrigonometryScreen(),
+            ),
+            _CategoryCard(
+                title: "Electric",
+                icon: Icons.electrical_services,
+                color: Colors.greenAccent
+            ),
+            _CategoryCard(
+                title: "Typography",
+                icon: Icons.text_fields,
+                color: Colors.lightGreen
+            ),
+            _CategoryCard(
+                title: "Numeral",
+                icon: Icons.tag,
+                color: Colors.deepPurpleAccent,
+                screen: ConverterNumeralScreen()
             )
           ],
         ),
