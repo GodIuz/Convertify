@@ -2,6 +2,7 @@ import 'package:convertify/feature/domain/enums/cooking_unit.dart';
 import 'package:convertify/feature/domain/extensions/cooking_unit_extension.dart';
 import 'package:convertify/feature/domain/services/converter_cooking_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ConverterCookingScreen extends StatefulWidget {
   const ConverterCookingScreen({super.key});
@@ -16,15 +17,11 @@ class _CookingScreenState extends State<ConverterCookingScreen> {
   CookingUnit _toUnit = CookingUnit.mlCook;
   String _resultValue = "0";
 
-  // Λογική υπολογισμού βάσει των συντελεστών που ορίσαμε στο Service
   void _calculate() {
     double val = double.tryParse(_controller.text) ?? 0;
     double fromFactor = ConverterCookingService.cookingTo[_fromUnit] ?? 1.0;
     double toFactor = ConverterCookingService.cookingTo[_toUnit] ?? 1.0;
-
-    // Μετατροπή: (Τιμή * Συντελεστής Από) / Συντελεστής Προς
     double res = (val * fromFactor) / toFactor;
-
     setState(() {
       if (res == 0) {
         _resultValue = "0";
@@ -36,8 +33,8 @@ class _CookingScreenState extends State<ConverterCookingScreen> {
     });
   }
 
-  // Λειτουργία εναλλαγής μονάδων (Swap)
   void _swapUnits() {
+    HapticFeedback.lightImpact();
     setState(() {
       final temp = _fromUnit;
       _fromUnit = _toUnit;
@@ -49,7 +46,7 @@ class _CookingScreenState extends State<ConverterCookingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0B0B10), // Σκούρο background όπως η φωτό 1
+      backgroundColor: const Color(0xFF0B0B10),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -70,7 +67,6 @@ class _CookingScreenState extends State<ConverterCookingScreen> {
             const Text("Quantity", style: TextStyle(color: Colors.white38, fontSize: 12)),
             const SizedBox(height: 8),
 
-            // Μεγάλο Input Box
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
@@ -88,7 +84,6 @@ class _CookingScreenState extends State<ConverterCookingScreen> {
 
             const SizedBox(height: 25),
 
-            // Σειρά με τα Dropdowns (From - Swap - To)
             Row(
               children: [
                 Expanded(child: _buildDropdownColumn("From", _fromUnit, (val) {
@@ -103,7 +98,7 @@ class _CookingScreenState extends State<ConverterCookingScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: const BoxDecoration(
-                        color: Color(0xFF132B31), // Σκούρο κυανό για το εικονίδιο swap
+                        color: Color(0xFF132B31),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(Icons.swap_horiz, color: Colors.cyanAccent, size: 24),
@@ -120,7 +115,6 @@ class _CookingScreenState extends State<ConverterCookingScreen> {
 
             const SizedBox(height: 40),
 
-            // Η Μεγάλη Κάρτα Αποτελέσματος
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 40),
@@ -153,7 +147,6 @@ class _CookingScreenState extends State<ConverterCookingScreen> {
     );
   }
 
-  // Helper Widget για τα dropdowns
   Widget _buildDropdownColumn(String title, CookingUnit value, ValueChanged<CookingUnit?> onChanged) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

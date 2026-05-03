@@ -5,13 +5,15 @@ import 'package:convertify/feature/domain/services/converter_area_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class ConverterAreaScreen  extends StatefulWidget{
+class ConverterAreaScreen extends StatefulWidget {
   const ConverterAreaScreen({super.key});
-  State<ConverterAreaScreen> createState() => _ConverterAreaConverterState();
+
+  @override
+  State<ConverterAreaScreen> createState() => _ConverterAreaScreenState();
 }
 
-class _ConverterAreaConverterState extends State<ConverterAreaScreen>{
-  final _controller = TextEditingController();
+class _ConverterAreaScreenState extends State<ConverterAreaScreen> {
+  final _controller = TextEditingController(text: "1.00");
   final _service = ConverterAreaService();
 
   AreaUnit from = AreaUnit.sq_meter;
@@ -19,76 +21,143 @@ class _ConverterAreaConverterState extends State<ConverterAreaScreen>{
   double result = 0;
 
   @override
+  void initState() {
+    super.initState();
+    _convert();
+  }
+
+  void _convert() {
+    final text = _controller.text.trim().replaceAll(',', '.');
+    final value = double.tryParse(text) ?? 0;
+    setState(() {
+      result = _service.convertArea(value: value, from: from, to: to);
+    });
+  }
+
+  void _swapUnits() {
+    HapticFeedback.lightImpact();
+    setState(() {
+      final temp = from;
+      from = to;
+      to = temp;
+      _convert();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    const areaGreen = Color(0xFF00E676);
     return Scaffold(
-      appBar: AppBar(title: const Text("Area Converter"), centerTitle: true),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
+      backgroundColor: const Color(0xFF0B0B10),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          "Area Converter",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+        ),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text("Value to Convert", style: TextStyle(color: Colors.white38, fontSize: 12)),
+            const SizedBox(height: 8),
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                color: const Color(0xFF1A1A25),
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: areaGreen.withValues(alpha: 0.1)),
               ),
               child: TextField(
                 controller: _controller,
-                keyboardType: TextInputType.number,
-                style: const TextStyle(fontSize: 28),
-                decoration: const InputDecoration(border: InputBorder.none, hintText: "Enter size"),
-                onChanged: (_) => convert(),
+                style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: "0.00",
+                  hintStyle: TextStyle(color: Colors.white10),
+                ),
+                onChanged: (_) => _convert(),
               ),
             ),
-
-            const SizedBox(height: 24),
+            const SizedBox(height: 25),
             Row(
               children: [
-                Expanded(child: _buildDropdown(from, (val) {
-                  setState(() => from = val);
-                  convert();
-                })),
-                const SizedBox(width: 12),
-                GestureDetector(
-                  onTap: swapUnits,
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(shape: BoxShape.circle, color: Theme.of(context).colorScheme.primaryContainer),
-                    child: const Icon(Icons.swap_vert),
+                Expanded(child: _buildDropdownColumn("From", from, (val) {
+                  setState(() => from = val!);
+                  _convert();
+                }, areaGreen)),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: GestureDetector(
+                    onTap: _swapUnits,
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: areaGreen.withValues(alpha: 0.15),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.swap_horiz, color: areaGreen, size: 24),
+                    ),
                   ),
                 ),
-                const SizedBox(width: 12),
-                Expanded(child: _buildDropdown(to, (val) {
-                  setState(() => to = val);
-                  convert();
-                })),
+                Expanded(child: _buildDropdownColumn("To", to, (val) {
+                  setState(() => to = val!);
+                  _convert();
+                }, Colors.white24)),
               ],
             ),
-
-            const SizedBox(height: 32),
-
+            const SizedBox(height: 40),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.symmetric(vertical: 45),
               decoration: BoxDecoration(
+                color: const Color(0xFF1A1A25),
                 borderRadius: BorderRadius.circular(24),
-                gradient: const LinearGradient(colors: [Color(0xFF1A237E), Color(0xFF00BCD4)]),
+                boxShadow: [
+                  BoxShadow(color: areaGreen.withValues(alpha: 0.05), blurRadius: 20, spreadRadius: 1),
+                ],
+                border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("Result", style: TextStyle(color: Colors.white70, fontSize: 16)),
-                  const SizedBox(height: 8),
-                  Text(
-                    NumberFormatter.format(result),
-                    style: const TextStyle(fontSize: 35, fontWeight: FontWeight.bold, color: Colors.white),
+                  const Text(
+                    "RESULT",
+                    style: TextStyle(color: Colors.white38, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 20),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      NumberFormatter.format(result),
+                      style: const TextStyle(fontSize: 54, fontWeight: FontWeight.bold, color: areaGreen),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
                   Text(
-                    to.label,
-                    style: const TextStyle(fontSize: 15, color: Colors.white70, fontWeight: FontWeight.w500),
+                    to.label.toUpperCase(),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 14, color: Colors.white54, fontWeight: FontWeight.w600),
                   ),
                 ],
+              ),
+            ),
+
+            const SizedBox(height: 30),
+            const Center(
+              child: Text(
+                "CONVERTIFY v1.0",
+                style: TextStyle(color: Colors.white10, fontSize: 10, letterSpacing: 1),
               ),
             ),
           ],
@@ -97,34 +166,37 @@ class _ConverterAreaConverterState extends State<ConverterAreaScreen>{
     );
   }
 
-  Widget _buildDropdown(AreaUnit value, Function(AreaUnit) onChanged) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Theme.of(context).colorScheme.surfaceContainer),
-      child: DropdownButton<AreaUnit>(
-        value: value,
-        isExpanded: true,
-        underline: const SizedBox(),
-        items: AreaUnit.values.map((unit) => DropdownMenuItem(value: unit, child: Text(unit.label))).toList(),
-        onChanged: (val) => onChanged(val!),
-      ),
+  Widget _buildDropdownColumn(String title, AreaUnit value, ValueChanged<AreaUnit?> onChanged, Color accentColor) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title, style: const TextStyle(color: Colors.white38, fontSize: 12)),
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1A1A25),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: accentColor.withValues(alpha: 0.1)),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<AreaUnit>(
+              value: value,
+              isExpanded: true,
+              dropdownColor: const Color(0xFF1A1A25),
+              icon: Icon(Icons.keyboard_arrow_down, color: accentColor, size: 20),
+              items: AreaUnit.values.map((u) => DropdownMenuItem(
+                value: u,
+                child: Text(u.label,
+                    style: const TextStyle(color: Colors.white, fontSize: 13),
+                    overflow: TextOverflow.ellipsis
+                ),
+              )).toList(),
+              onChanged: onChanged,
+            ),
+          ),
+        ),
+      ],
     );
-  }
-
-  void convert() {
-    final value = double.tryParse(_controller.text) ?? 0;
-    setState(() {
-      result = _service.convertArea(value: value, from: from, to: to);
-    });
-  }
-
-  void swapUnits() {
-    HapticFeedback.lightImpact();
-    setState(() {
-      final area  = from;
-      from = to;
-      to = area;
-    });
-    convert();
   }
 }

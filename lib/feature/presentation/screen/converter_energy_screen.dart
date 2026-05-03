@@ -13,7 +13,7 @@ class ConverterEnergyScreen extends StatefulWidget {
 }
 
 class _ConverterEnergyScreenState extends State<ConverterEnergyScreen> {
-  final _controller = TextEditingController(text: "1");
+  final _controller = TextEditingController(text: "1.00");
   final _service = ConverterEnergyService();
 
   EnergyUnit from = EnergyUnit.joule;
@@ -28,7 +28,6 @@ class _ConverterEnergyScreenState extends State<ConverterEnergyScreen> {
 
   void _convert() {
     final text = _controller.text.trim().replaceAll(',', '.');
-
     final value = double.tryParse(text) ?? 0;
     setState(() {
       result = _service.convertEnergy(value: value, from: from, to: to);
@@ -41,113 +40,124 @@ class _ConverterEnergyScreenState extends State<ConverterEnergyScreen> {
       final temp = from;
       from = to;
       to = temp;
+      _convert();
     });
-    _convert();
   }
 
   @override
   Widget build(BuildContext context) {
-    const primaryYellow = Color(0xFFFFD600);
-    const accentAmber = Color(0xFFFFAB00);
-
+    const energyYellow = Color(0xFFFFD600);
     return Scaffold(
       backgroundColor: const Color(0xFF0B0B10),
       appBar: AppBar(
-        title: const Text("Energy Converter",
-            style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.2)),
-        centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          "Energy Converter",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+        ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text("Value to Convert", style: TextStyle(color: Colors.white38, fontSize: 12)),
+            const SizedBox(height: 8),
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(24),
                 color: const Color(0xFF1A1A25),
-                border: Border.all(color: primaryYellow.withOpacity(0.3)),
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: energyYellow.withValues(alpha: 0.1)),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text("INPUT VALUE", style: TextStyle(color: Colors.white24, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2)),
-                  TextField(
-                    controller: _controller,
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                    inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
-                    style: const TextStyle(fontSize: 36, color: Colors.white, fontWeight: FontWeight.bold),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "0.0",
-                      hintStyle: const TextStyle(color: Colors.white10),
-                      suffixIcon: Icon(Icons.bolt, color: primaryYellow.withOpacity(0.5)),
-                    ),
-                    onChanged: (_) => _convert(),
-                  ),
-                ],
+              child: TextField(
+                controller: _controller,
+                style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: "0.00",
+                  hintStyle: TextStyle(color: Colors.white10),
+                  suffixIcon: Icon(Icons.bolt, color: Colors.white10),
+                ),
+                onChanged: (_) => _convert(),
               ),
             ),
-
-            const SizedBox(height: 20),
+            const SizedBox(height: 25),
             Row(
               children: [
-                Expanded(child: _buildUnitSelector(from, (val) {
-                  setState(() => from = val);
+                Expanded(child: _buildDropdownColumn("From", from, (val) {
+                  setState(() => from = val!);
                   _convert();
-                }, primaryYellow)),
-
+                }, energyYellow)),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: IconButton(
-                    onPressed: _swapUnits,
-                    icon: const Icon(Icons.sync_alt, color: primaryYellow, size: 30),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: GestureDetector(
+                    onTap: _swapUnits,
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: energyYellow.withValues(alpha: 0.15),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.swap_horiz, color: energyYellow, size: 24),
+                    ),
                   ),
                 ),
-
-                Expanded(child: _buildUnitSelector(to, (val) {
-                  setState(() => to = val);
+                Expanded(child: _buildDropdownColumn("To", to, (val) {
+                  setState(() => to = val!);
                   _convert();
-                }, accentAmber)),
+                }, const Color(0xFFFFAB00))),
               ],
             ),
-
-            const SizedBox(height: 30),
+            const SizedBox(height: 40),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(35),
+              padding: const EdgeInsets.symmetric(vertical: 45),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(32),
-                gradient: LinearGradient(
-                  colors: [const Color(0xFF1A1A25), const Color(0xFF050505)],
-                  begin: Alignment.topLeft, end: Alignment.bottomRight,
-                ),
+                color: const Color(0xFF1A1A25),
+                borderRadius: BorderRadius.circular(24),
                 boxShadow: [
-                  BoxShadow(color: primaryYellow.withOpacity(0.05), blurRadius: 30, spreadRadius: 5)
+                  BoxShadow(color: energyYellow.withValues(alpha: 0.05), blurRadius: 20, spreadRadius: 1),
                 ],
-                border: Border.all(color: Colors.white.withOpacity(0.05)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
               ),
               child: Column(
                 children: [
-                  const Text("EQUIVALENT ENERGY",
-                      style: TextStyle(color: primaryYellow, fontSize: 12, letterSpacing: 3, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 25),
+                  const Text(
+                    "RESULT",
+                    style: TextStyle(color: Colors.white38, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20),
                   FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text(
                       NumberFormatter.format(result),
-                      style: const TextStyle(fontSize: 54, fontWeight: FontWeight.bold, color: Colors.white),
+                      style: const TextStyle(fontSize: 54, fontWeight: FontWeight.bold, color: energyYellow),
                     ),
                   ),
                   const SizedBox(height: 10),
                   Text(
                     to.label.toUpperCase(),
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 14, color: Colors.white38, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 14, color: Colors.white54, fontWeight: FontWeight.w600),
                   ),
                 ],
+              ),
+            ),
+
+            const SizedBox(height: 30),
+            const Center(
+              child: Text(
+                "CONVERTIFY v1.0",
+                style: TextStyle(color: Colors.white10, fontSize: 10, letterSpacing: 1),
               ),
             ),
           ],
@@ -156,27 +166,37 @@ class _ConverterEnergyScreenState extends State<ConverterEnergyScreen> {
     );
   }
 
-  Widget _buildUnitSelector(EnergyUnit value, Function(EnergyUnit) onChanged, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: const Color(0xFF1A1A25),
-        border: Border.all(color: color.withOpacity(0.2)),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<EnergyUnit>(
-          value: value,
-          isExpanded: true,
-          dropdownColor: const Color(0xFF1A1A25),
-          items: EnergyUnit.values.map((u) => DropdownMenuItem(
-            value: u,
-            child: Text(u.label, style: const TextStyle(color: Colors.white, fontSize: 13, overflow: TextOverflow.ellipsis)),
-          )).toList(),
-          onChanged: (val) => onChanged(val!),
+  Widget _buildDropdownColumn(String title, EnergyUnit value, ValueChanged<EnergyUnit?> onChanged, Color accentColor) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title, style: const TextStyle(color: Colors.white38, fontSize: 12)),
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1A1A25),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: accentColor.withValues(alpha: 0.1)),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<EnergyUnit>(
+              value: value,
+              isExpanded: true,
+              dropdownColor: const Color(0xFF1A1A25),
+              icon: Icon(Icons.keyboard_arrow_down, color: accentColor, size: 20),
+              items: EnergyUnit.values.map((u) => DropdownMenuItem(
+                value: u,
+                child: Text(u.label,
+                    style: const TextStyle(color: Colors.white, fontSize: 13),
+                    overflow: TextOverflow.ellipsis
+                ),
+              )).toList(),
+              onChanged: onChanged,
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 }
-

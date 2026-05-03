@@ -1,4 +1,3 @@
-
 import 'package:convertify/core/utils/number_formatter.dart';
 import 'package:convertify/feature/domain/enums/weight_unit.dart';
 import 'package:convertify/feature/domain/extensions/weight_unit_extension.dart';

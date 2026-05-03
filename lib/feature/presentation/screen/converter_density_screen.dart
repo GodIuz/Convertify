@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:convertify/feature/domain/enums/density_unit.dart';
 import 'package:convertify/feature/domain/services/converter_density_service.dart';
-import 'package:flutter/material.dart';
 import 'package:convertify/feature/domain/extensions/density_unit_extension.dart';
 
 class DensityConverterScreen extends StatefulWidget {
@@ -11,136 +12,155 @@ class DensityConverterScreen extends StatefulWidget {
 }
 
 class _DensityConverterScreenState extends State<DensityConverterScreen> {
+  final _controller = TextEditingController(text: "1.00");
   final ConverterDensityService _service = ConverterDensityService();
 
-  double _inputValue = 0;
   DensityUnit _fromUnit = DensityUnit.kgm3;
   DensityUnit _toUnit = DensityUnit.gcm3;
-  String _result = '0';
+  String _resultValue = '0';
+
+  @override
+  void initState() {
+    super.initState();
+    _calculate();
+  }
 
   void _calculate() {
-    final double converted = _service.convert(_inputValue, _fromUnit, _toUnit);
+    final text = _controller.text.trim().replaceAll(',', '.');
+    final double value = double.tryParse(text) ?? 0;
+    final double converted = _service.convert(value, _fromUnit, _toUnit);
     setState(() {
-      _result = _service.formatResult(converted);
+      _resultValue = _service.formatResult(converted);
+    });
+  }
+
+  void _swapUnits() {
+    HapticFeedback.lightImpact();
+    setState(() {
+      final temp = _fromUnit;
+      _fromUnit = _toUnit;
+      _toUnit = temp;
+      _calculate();
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    const densityTeal = Color(0xFF00BFA5);
     return Scaffold(
       backgroundColor: const Color(0xFF0B0B10),
       appBar: AppBar(
-        title: const Text("Density Converter",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 20),
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
+        title: const Text(
+          "Density Converter",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+        ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
-            const Text("Value to Convert",
-                style: TextStyle(color: Colors.white54, fontSize: 14)),
-            const SizedBox(height: 12),
-            TextField(
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold),
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: const Color(0xFF1A1A25),
-                hintText: "0.00",
-                hintStyle: const TextStyle(color: Colors.white10),
-                contentPadding: const EdgeInsets.all(20),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(color: Colors.white10),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(color: Colors.cyanAccent, width: 2),
-                ),
+            const Text("Value to Convert", style: TextStyle(color: Colors.white38, fontSize: 12)),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1A1A25),
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: densityTeal.withValues(alpha: 0.1)),
               ),
-              onChanged: (value) {
-                _inputValue = double.tryParse(value) ?? 0;
-                _calculate();
-              },
+              child: TextField(
+                controller: _controller,
+                style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: "0.00",
+                  hintStyle: TextStyle(color: Colors.white10),
+                ),
+                onChanged: (_) => _calculate(),
+              ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 25),
             Row(
               children: [
-                Expanded(child: _buildUnitPicker("From", _fromUnit, (val) {
+                Expanded(child: _buildDropdownColumn("From", _fromUnit, (val) {
                   setState(() => _fromUnit = val!);
                   _calculate();
-                })),
+                }, densityTeal)),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.cyanAccent.withValues(alpha: 0.1),
-                      shape: BoxShape.circle,
+                  child: GestureDetector(
+                    onTap: _swapUnits,
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: densityTeal.withValues(alpha: 0.15),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.swap_horiz, color: densityTeal, size: 24),
                     ),
-                    child: const Icon(Icons.swap_horiz, color: Colors.cyanAccent, size: 20),
                   ),
                 ),
-                Expanded(child: _buildUnitPicker("To", _toUnit, (val) {
+                Expanded(child: _buildDropdownColumn("To", _toUnit, (val) {
                   setState(() => _toUnit = val!);
                   _calculate();
-                })),
+                }, Colors.white24)),
               ],
             ),
-            const SizedBox(height: 48),
-            const Center(
-              child: Text(
-                "CONVERTED RESULT",
-                style: TextStyle(color: Colors.white38, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2),
-              ),
-            ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 40),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+              padding: const EdgeInsets.symmetric(vertical: 45),
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    const Color(0xFF1A1A25),
-                    const Color(0xFF1A1A25).withValues(alpha: 0.8),
-                  ],
-                ),
+                color: const Color(0xFF1A1A25),
                 borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: Colors.cyanAccent.withValues(alpha: 0.2)),
                 boxShadow: [
-                  BoxShadow(
-                    color: Colors.cyanAccent.withValues(alpha: 0.05),
-                    blurRadius: 20,
-                    spreadRadius: 5,
-                  )
+                  BoxShadow(color: densityTeal.withValues(alpha: 0.05), blurRadius: 20, spreadRadius: 1),
                 ],
+                border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
               ),
               child: Column(
                 children: [
-                  Text(
-                    _result,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Colors.cyanAccent,
-                      fontSize: 42,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: -1,
+                  const Text(
+                    "RESULT",
+                    style: TextStyle(color: Colors.white38, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      _resultValue,
+                      style: const TextStyle(
+                        color: densityTeal,
+                        fontSize: 54,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 10),
                   Text(
-                    _toUnit.label,
-                    style: const TextStyle(color: Colors.white54, fontSize: 16),
+                    _toUnit.label.toUpperCase(),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 14, color: Colors.white54, fontWeight: FontWeight.w600),
                   ),
                 ],
+              ),
+            ),
+
+            const SizedBox(height: 30),
+            const Center(
+              child: Text(
+                "CONVERTIFY v1.0",
+                style: TextStyle(color: Colors.white10, fontSize: 10, letterSpacing: 1),
               ),
             ),
           ],
@@ -149,31 +169,32 @@ class _DensityConverterScreenState extends State<DensityConverterScreen> {
     );
   }
 
-  Widget _buildUnitPicker(String label, DensityUnit selected, Function(DensityUnit?) onChanged) {
+  Widget _buildDropdownColumn(String title, DensityUnit value, ValueChanged<DensityUnit?> onChanged, Color accentColor) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(color: Colors.white38, fontSize: 12)),
+        Text(title, style: const TextStyle(color: Colors.white38, fontSize: 12)),
         const SizedBox(height: 8),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
             color: const Color(0xFF1A1A25),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.white10),
+            border: Border.all(color: accentColor.withValues(alpha: 0.1)),
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<DensityUnit>(
-              value: selected,
+              value: value,
               isExpanded: true,
               dropdownColor: const Color(0xFF1A1A25),
-              icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white30),
-              items: DensityUnit.values.map((unit) {
+              icon: Icon(Icons.keyboard_arrow_down, color: accentColor, size: 20),
+              items: DensityUnit.values.map((u) {
                 return DropdownMenuItem(
-                  value: unit,
+                  value: u,
                   child: Text(
-                    unit.label,
-                    style: const TextStyle(color: Colors.white, fontSize: 15),
+                    u.label,
+                    style: const TextStyle(color: Colors.white, fontSize: 13),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 );
               }).toList(),

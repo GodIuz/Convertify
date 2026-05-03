@@ -13,7 +13,7 @@ class ConverterCurrencyScreen extends StatefulWidget {
 }
 
 class _ConverterCurrencyScreenState extends State<ConverterCurrencyScreen> {
-  final _controller = TextEditingController();
+  final _controller = TextEditingController(text: "1.00");
   final _service = ConverterCurrencyService();
 
   CurrencyUnit from = CurrencyUnit.eur;
@@ -22,9 +22,20 @@ class _ConverterCurrencyScreenState extends State<ConverterCurrencyScreen> {
   double result = 0;
   bool isLoading = false;
 
-  void convert() async {
-    final value = double.tryParse(_controller.text) ?? 0;
-    if (value == 0) return;
+  @override
+  void initState() {
+    super.initState();
+    _convert();
+  }
+
+  void _convert() async {
+    final text = _controller.text.trim().replaceAll(',', '.');
+    final value = double.tryParse(text) ?? 0;
+
+    if (value == 0) {
+      setState(() => result = 0);
+      return;
+    }
 
     setState(() => isLoading = true);
 
@@ -48,109 +59,142 @@ class _ConverterCurrencyScreenState extends State<ConverterCurrencyScreen> {
     }
   }
 
-  void swapUnits() {
+  void _swapUnits() {
     HapticFeedback.lightImpact();
     setState(() {
       final temp = from;
       from = to;
       to = temp;
     });
-    convert();
+    _convert();
   }
 
   @override
   Widget build(BuildContext context) {
-
+    const currencyGold = Color(0xFFFFD700);
     return Scaffold(
+      backgroundColor: const Color(0xFF0B0B10),
       appBar: AppBar(
-        title: const Text("Currency Converter"),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          "Currency Converter",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+        ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text("Amount to Convert", style: TextStyle(color: Colors.white38, fontSize: 12)),
+            const SizedBox(height: 8),
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                color: const Color(0xFF1A1A25),
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: currencyGold.withValues(alpha: 0.1)),
               ),
               child: TextField(
                 controller: _controller,
-                keyboardType: TextInputType.number,
-                style: const TextStyle(fontSize: 28),
+                style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
                 decoration: const InputDecoration(
                   border: InputBorder.none,
-                  hintText: "Enter amount",
+                  hintText: "0.00",
+                  hintStyle: TextStyle(color: Colors.white10),
                 ),
-                onChanged: (_) => convert(),
+                onChanged: (_) => _convert(),
               ),
             ),
-
-            const SizedBox(height: 24),
+            const SizedBox(height: 25),
             Row(
               children: [
-                Expanded(child: _buildDropdown(from, (val) {
-                  setState(() => from = val);
-                  convert();
-                })),
+                Expanded(child: _buildDropdownColumn("From", from, (val) {
+                  setState(() => from = val!);
+                  _convert();
+                }, currencyGold)),
 
-                const SizedBox(width: 12),
-
-                GestureDetector(
-                  onTap: swapUnits,
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Theme.of(context).colorScheme.primaryContainer,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: GestureDetector(
+                    onTap: _swapUnits,
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: currencyGold.withValues(alpha: 0.15),
+                        shape: BoxShape.circle,
+                      ),
+                      child: isLoading
+                          ? const SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(strokeWidth: 2, color: currencyGold)
+                      )
+                          : const Icon(Icons.swap_horiz, color: currencyGold, size: 24),
                     ),
-                    child: isLoading
-                        ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2))
-                        : const Icon(Icons.swap_vert),
                   ),
                 ),
 
-                const SizedBox(width: 12),
-
-                Expanded(child: _buildDropdown(to, (val) {
-                  setState(() => to = val);
-                  convert();
-                })),
+                Expanded(child: _buildDropdownColumn("To", to, (val) {
+                  setState(() => to = val!);
+                  _convert();
+                }, Colors.white24)),
               ],
             ),
 
-            const SizedBox(height: 32),
+            const SizedBox(height: 40),
+
+            // 3. Μεγάλη Κάρτα Αποτελέσματος
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.symmetric(vertical: 45),
               decoration: BoxDecoration(
+                color: const Color(0xFF1A1A25),
                 borderRadius: BorderRadius.circular(24),
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.green.shade700,
-                    Colors.teal.shade400,
-                  ],
-                ),
+                boxShadow: [
+                  BoxShadow(color: currencyGold.withValues(alpha: 0.05), blurRadius: 20, spreadRadius: 1),
+                ],
+                border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    "Result",
-                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                    "RESULT",
+                    style: TextStyle(color: Colors.white38, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    "${NumberFormatter.format(result)} ${to.code}",
-                    style: const TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                  const SizedBox(height: 20),
+                  isLoading
+                      ? const Center(child: CircularProgressIndicator(color: currencyGold))
+                      : FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      "${NumberFormatter.format(result)} ${to.code}",
+                      style: const TextStyle(fontSize: 54, fontWeight: FontWeight.bold, color: currencyGold),
                     ),
                   ),
+                  const SizedBox(height: 10),
+                  Text(
+                    to.label.toUpperCase(),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 14, color: Colors.white54, fontWeight: FontWeight.w600),
+                  ),
                 ],
+              ),
+            ),
+
+            const SizedBox(height: 30),
+            const Center(
+              child: Text(
+                "CONVERTIFY v1.0",
+                style: TextStyle(color: Colors.white10, fontSize: 10, letterSpacing: 1),
               ),
             ),
           ],
@@ -159,26 +203,38 @@ class _ConverterCurrencyScreenState extends State<ConverterCurrencyScreen> {
     );
   }
 
-  Widget _buildDropdown(CurrencyUnit value, Function(CurrencyUnit) onChanged) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: Theme.of(context).colorScheme.surfaceContainer,
-      ),
-      child: DropdownButton<CurrencyUnit>(
-        value: value,
-        isExpanded: true,
-        underline: const SizedBox(),
-        menuMaxHeight: 350,
-        items: CurrencyUnit.values.map((unit) {
-          return DropdownMenuItem(
-            value: unit,
-            child: Text(unit.label),
-          );
-        }).toList(),
-        onChanged: (val) => onChanged(val!),
-      ),
+  Widget _buildDropdownColumn(String title, CurrencyUnit value, ValueChanged<CurrencyUnit?> onChanged, Color accentColor) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title, style: const TextStyle(color: Colors.white38, fontSize: 12)),
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1A1A25),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: accentColor.withValues(alpha: 0.1)),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<CurrencyUnit>(
+              value: value,
+              isExpanded: true,
+              dropdownColor: const Color(0xFF1A1A25),
+              menuMaxHeight: 350,
+              icon: Icon(Icons.keyboard_arrow_down, color: accentColor, size: 20),
+              items: CurrencyUnit.values.map((u) => DropdownMenuItem(
+                value: u,
+                child: Text(u.label,
+                    style: const TextStyle(color: Colors.white, fontSize: 13),
+                    overflow: TextOverflow.ellipsis
+                ),
+              )).toList(),
+              onChanged: onChanged,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

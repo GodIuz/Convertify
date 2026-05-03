@@ -3,6 +3,7 @@ import 'package:convertify/feature/domain/enums/trigonometric_unit.dart';
 import 'package:convertify/feature/domain/extensions/trigonometric_unit_extension.dart';
 import 'package:convertify/feature/domain/services/trigonometry_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TrigonometryScreen extends StatefulWidget {
   const TrigonometryScreen({super.key});
@@ -13,18 +14,22 @@ class TrigonometryScreen extends StatefulWidget {
 
 class _TrigonometryScreenState extends State<TrigonometryScreen> {
   final TrigonometryService _trigService = TrigonometryService();
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController(text: "0.00");
 
   Map<TrigonometricUnit, String> _calculatedResults = {};
-  String? _errorText;
 
-  void _onCalculatePressed() {
+  @override
+  void initState() {
+    super.initState();
+    _calculate(); // Αρχικός υπολογισμός
+  }
+
+  void _calculate() {
+    final text = _controller.text.trim().replaceAll(',', '.');
+    final double? input = double.tryParse(text);
+
     setState(() {
-      _errorText = null;
-      double? input = double.tryParse(_controller.text);
-
       if (input == null) {
-        _errorText = "Enter a valid number";
         _calculatedResults = {};
         return;
       }
@@ -40,112 +45,120 @@ class _TrigonometryScreenState extends State<TrigonometryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    const trigCyan = Color(0xFF00E5FF);
     return Scaffold(
       backgroundColor: const Color(0xFF0B0B10),
       appBar: AppBar(
-        title: const Text("Trigonometry Calculator",
-            style: TextStyle(fontWeight: FontWeight.bold)),
-        centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          "Trigonometry Calculator",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+        ),
+        centerTitle: true,
       ),
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Card(
-              color: const Color(0xFF1A1A25),
-              elevation: 4,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _controller,
-                        style: const TextStyle(color: Colors.white),
-                        keyboardType: const TextInputType.numberWithOptions(decimal: true, signed: true),
-                        decoration: InputDecoration(
-                          labelText: 'Enter value x',
-                          labelStyle: const TextStyle(color: Colors.white54),
-                          hintText: 'e.g. 45 or 0.5',
-                          hintStyle: const TextStyle(color: Colors.white24),
-                          enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white10)),
-                          errorText: _errorText,
-                        ),
-                        onSubmitted: (_) => _onCalculatePressed(),
-                      ),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text("Value to Calculate (x)", style: TextStyle(color: Colors.white38, fontSize: 12)),
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1A1A25),
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(color: trigCyan.withValues(alpha: 0.1)),
+                  ),
+                  child: TextField(
+                    controller: _controller,
+                    style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                    keyboardType: const TextInputType.numberWithOptions(decimal: true, signed: true),
+                    inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,\-]'))],
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "0.00",
+                      hintStyle: TextStyle(color: Colors.white10),
                     ),
-                    const SizedBox(width: 16),
-                    ElevatedButton(
-                      onPressed: _onCalculatePressed,
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.all(16),
-                        backgroundColor: Colors.cyanAccent,
-                        foregroundColor: Colors.black,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                      child: const Icon(Icons.calculate_outlined),
-                    ),
-                  ],
+                    onChanged: (_) => _calculate(),
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
-
+          const SizedBox(height: 20),
           Expanded(
             child: _calculatedResults.isEmpty
-                ? const Center(child: Text("Waiting for input...",
-                style: TextStyle(color: Colors.white24)))
-                : SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                children: TrigonometricCategory.values.map((category) {
+                ? const Center(child: Text("Enter a valid number", style: TextStyle(color: Colors.white24)))
+                : ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              children: [
+                ...TrigonometricCategory.values.map((category) {
                   final functionsInCategory = TrigonometricUnit.values
                       .where((u) => u.category == category)
                       .toList();
-
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 12),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF1A1A25),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.white10),
-                    ),
-                    child: ExpansionTile(
-                      initiallyExpanded: true,
-                      leading: Icon(category.icon, color: Colors.cyanAccent),
-                      iconColor: Colors.white,
-                      collapsedIconColor: Colors.white54,
-                      title: Text(
-                        category.label,
-                        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-                      ),
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: GridView.count(
-                            crossAxisCount: 2,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            childAspectRatio: 2.5,
-                            mainAxisSpacing: 8,
-                            crossAxisSpacing: 8,
-                            children: functionsInCategory.map((unit) {
-                              final resultValue = _calculatedResults[unit] ?? "-";
-                              return _ResultCard(
-                                title: "${unit.label} (${unit.abbreviation})",
-                                value: resultValue,
-                              );
-                            }).toList(),
-                          ),
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 15.0),
+                        child: Row(
+                          children: [
+                            Icon(category.icon, color: trigCyan, size: 16),
+                            const SizedBox(width: 8),
+                            Text(
+                              category.label.toUpperCase(),
+                              style: const TextStyle(
+                                color: Colors.white54,
+                                fontSize: 11,
+                                letterSpacing: 1.5,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                      // Grid για τα mini result cards
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 1.8,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                        ),
+                        itemCount: functionsInCategory.length,
+                        itemBuilder: (context, index) {
+                          final unit = functionsInCategory[index];
+                          final value = _calculatedResults[unit] ?? "-";
+                          return _MiniResultCard(
+                            label: "${unit.label} (${unit.abbreviation})",
+                            value: value,
+                            accentColor: trigCyan,
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                    ],
                   );
-                }).toList(),
-              ),
+                }),
+                const SizedBox(height: 40),
+                const Center(
+                  child: Text(
+                    "CONVERTIFY v1.0",
+                    style: TextStyle(color: Colors.white10, fontSize: 10, letterSpacing: 1),
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
             ),
           ),
         ],
@@ -154,42 +167,49 @@ class _TrigonometryScreenState extends State<TrigonometryScreen> {
   }
 }
 
-class _ResultCard extends StatelessWidget {
-  final String title;
+class _MiniResultCard extends StatelessWidget {
+  final String label;
   final String value;
+  final Color accentColor;
 
-  const _ResultCard({required this.title, required this.value});
-
+  const _MiniResultCard({
+    required this.label,
+    required this.value,
+    required this.accentColor,
+  });
   @override
   Widget build(BuildContext context) {
     bool isError = value == "NaN" || value == "Undefined" || value == "∞";
-
     return Container(
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: isError ? Colors.red.withOpacity(0.1) : Colors.cyanAccent.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: isError ? Colors.redAccent.withOpacity(0.3) : Colors.cyanAccent.withOpacity(0.2)),
+        color: const Color(0xFF1A1A25),
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(
+          color: isError
+              ? Colors.redAccent.withValues(alpha: 0.2)
+              : Colors.white.withValues(alpha: 0.05),
+        ),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            title,
-            style: const TextStyle(fontSize: 10, color: Colors.white54, fontWeight: FontWeight.w500),
+            label,
+            style: const TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.bold),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 6),
           FittedBox(
             fit: BoxFit.scaleDown,
             child: Text(
               value,
               style: TextStyle(
-                fontSize: 18,
+                color: isError ? Colors.redAccent : accentColor,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: isError ? Colors.redAccent : Colors.cyanAccent,
               ),
             ),
           ),

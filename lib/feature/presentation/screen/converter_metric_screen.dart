@@ -12,16 +12,23 @@ class ConverterMetricScreen extends StatefulWidget {
   State<ConverterMetricScreen> createState() => _ConverterMetricScreenState();
 }
 
-class _ConverterMetricScreenState extends State<ConverterMetricScreen>  {
-  final _controller = TextEditingController();
+class _ConverterMetricScreenState extends State<ConverterMetricScreen> {
+  final _controller = TextEditingController(text: "1.00");
   final _service = ConverterMetricService();
 
   LengthUnit from = LengthUnit.meter;
   LengthUnit to = LengthUnit.kilometer;
   double result = 0;
 
-  void convert() {
-    final value = double.tryParse(_controller.text) ?? 0;
+  @override
+  void initState() {
+    super.initState();
+    _convert();
+  }
+
+  void _convert() {
+    final text = _controller.text.trim().replaceAll(',', '.');
+    final value = double.tryParse(text) ?? 0;
     setState(() {
       result = _service.convertLength(
         value: value,
@@ -31,112 +38,128 @@ class _ConverterMetricScreenState extends State<ConverterMetricScreen>  {
     });
   }
 
-  void swapUnits() {
+  void _swapUnits() {
     HapticFeedback.lightImpact();
     setState(() {
       final temp = from;
       from = to;
       to = temp;
+      _convert();
     });
-    convert();
   }
 
   @override
   Widget build(BuildContext context) {
+    const lengthBlue = Color(0xFF40C4FF);
     return Scaffold(
+      backgroundColor: const Color(0xFF0B0B10),
       appBar: AppBar(
-        title: const Text("Length Converter"),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          "Length Converter",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+        ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text("Value to Convert", style: TextStyle(color: Colors.white38, fontSize: 12)),
+            const SizedBox(height: 8),
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                color: const Color(0xFF1A1A25),
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: lengthBlue.withValues(alpha: 0.1)),
               ),
               child: TextField(
                 controller: _controller,
-                keyboardType: TextInputType.number,
-                style: const TextStyle(fontSize: 28),
+                style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
                 decoration: const InputDecoration(
                   border: InputBorder.none,
-                  hintText: "Enter value",
+                  hintText: "0.00",
+                  hintStyle: TextStyle(color: Colors.white10),
                 ),
-                onChanged: (_) => convert(),
+                onChanged: (_) => _convert(),
               ),
             ),
-
-            const SizedBox(height: 24),
+            const SizedBox(height: 25),
             Row(
               children: [
-                Expanded(child: _buildDropdown(from, (val) {
-                  HapticFeedback.selectionClick();
-                  setState(() => from = val);
-                  convert();
-                })),
-                const SizedBox(width: 12),
-                GestureDetector(
-                  onTap: swapUnits,
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Theme.of(context).colorScheme.primaryContainer,
+                Expanded(child: _buildDropdownColumn("From", from, (val) {
+                  setState(() => from = val!);
+                  _convert();
+                }, lengthBlue)),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: GestureDetector(
+                    onTap: _swapUnits,
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: lengthBlue.withValues(alpha: 0.15),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.swap_horiz, color: lengthBlue, size: 24),
                     ),
-                    child: const Icon(Icons.swap_vert),
                   ),
                 ),
-                const SizedBox(width: 12),
-                Expanded(child: _buildDropdown(to, (val) {
-                  HapticFeedback.selectionClick();
-                  setState(() => to = val);
-                  convert();
-                })),
+                Expanded(child: _buildDropdownColumn("To", to, (val) {
+                  setState(() => to = val!);
+                  _convert();
+                }, Colors.white24)),
               ],
             ),
-
-            const SizedBox(height: 32),
+            const SizedBox(height: 40),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.symmetric(vertical: 45),
               decoration: BoxDecoration(
+                color: const Color(0xFF1A1A25),
                 borderRadius: BorderRadius.circular(24),
-                gradient: LinearGradient(
-                  colors: [
-                    Theme.of(context).colorScheme.primary,
-                    Theme.of(context).colorScheme.secondary,
-                  ],
-                ),
+                boxShadow: [
+                  BoxShadow(color: lengthBlue.withValues(alpha: 0.05), blurRadius: 20, spreadRadius: 1),
+                ],
+                border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    "Result",
-                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                    "RESULT",
+                    style: TextStyle(color: Colors.white38, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    "${NumberFormatter.format(result)} ${to.label}",
-                    style: const TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                  const SizedBox(height: 20),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      NumberFormatter.format(result),
+                      style: const TextStyle(fontSize: 54, fontWeight: FontWeight.bold, color: lengthBlue),
                     ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    to.label.toUpperCase(),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 14, color: Colors.white54, fontWeight: FontWeight.w600),
                   ),
                 ],
               ),
             ),
-
-            const Spacer(),
-            Text(
-              "${from.label} → ${to.label}",
-              style: TextStyle(
-                color: Colors.grey.shade400,
+            const SizedBox(height: 30),
+            const Center(
+              child: Text(
+                "CONVERTIFY v1.0",
+                style: TextStyle(color: Colors.white10, fontSize: 10, letterSpacing: 1),
               ),
             ),
           ],
@@ -145,28 +168,37 @@ class _ConverterMetricScreenState extends State<ConverterMetricScreen>  {
     );
   }
 
-  Widget _buildDropdown(LengthUnit value, Function(LengthUnit) onChanged) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: Theme.of(context).colorScheme.surfaceContainer,
-      ),
-      child: DropdownButton<LengthUnit>(
-        value: value,
-        isExpanded: true,
-        underline: const SizedBox(),
-        items: LengthUnit.values.map((unit) {
-          return DropdownMenuItem(
-            value: unit,
-            child: Text(
-              unit.label,
-              style: const TextStyle(fontSize: 16),
+  Widget _buildDropdownColumn(String title, LengthUnit value, ValueChanged<LengthUnit?> onChanged, Color accentColor) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title, style: const TextStyle(color: Colors.white38, fontSize: 12)),
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1A1A25),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: accentColor.withValues(alpha: 0.1)),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<LengthUnit>(
+              value: value,
+              isExpanded: true,
+              dropdownColor: const Color(0xFF1A1A25),
+              icon: Icon(Icons.keyboard_arrow_down, color: accentColor, size: 20),
+              items: LengthUnit.values.map((u) => DropdownMenuItem(
+                value: u,
+                child: Text(u.label,
+                    style: const TextStyle(color: Colors.white, fontSize: 13),
+                    overflow: TextOverflow.ellipsis
+                ),
+              )).toList(),
+              onChanged: onChanged,
             ),
-          );
-        }).toList(),
-        onChanged: (val) => onChanged(val!),
-      ),
+          ),
+        ),
+      ],
     );
   }
 }

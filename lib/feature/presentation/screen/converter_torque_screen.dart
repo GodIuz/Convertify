@@ -13,7 +13,7 @@ class ConverterTorqueScreen extends StatefulWidget {
 }
 
 class _ConverterTorqueScreenState extends State<ConverterTorqueScreen> {
-  final _controller = TextEditingController(text: "100");
+  final _controller = TextEditingController(text: "100.00");
   final _service = ConverterTorqueService();
 
   TorqueUnit from = TorqueUnit.nm_torque;
@@ -34,141 +34,168 @@ class _ConverterTorqueScreenState extends State<ConverterTorqueScreen> {
     });
   }
 
+  void _swapUnits() {
+    HapticFeedback.lightImpact();
+    setState(() {
+      final temp = from;
+      from = to;
+      to = temp;
+      _convert();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     const torqueRed = Color(0xFFD50000);
-
     return Scaffold(
       backgroundColor: const Color(0xFF0B0B10),
       appBar: AppBar(
-        title: const Text("Torque Converter", style: TextStyle(fontWeight: FontWeight.bold)),
-        centerTitle: true,
         backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          "Torque Converter",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+        ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildInputCard(torqueRed),
-            const SizedBox(height: 20),
+            const Text("Value to Convert", style: TextStyle(color: Colors.white38, fontSize: 12)),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1A1A25),
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: torqueRed.withValues(alpha: 0.1)),
+              ),
+              child: TextField(
+                controller: _controller,
+                style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: "0.00",
+                  hintStyle: TextStyle(color: Colors.white10),
+                ),
+                onChanged: (_) => _convert(),
+              ),
+            ),
+            const SizedBox(height: 25),
             Row(
               children: [
-                Expanded(child: _buildDropdown(from, (val) {
-                  setState(() => from = val);
+                Expanded(child: _buildDropdownColumn("From", from, (val) {
+                  setState(() => from = val!);
                   _convert();
                 }, torqueRed)),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Icon(Icons.settings_input_component, color: torqueRed, size: 28),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: GestureDetector(
+                    onTap: _swapUnits,
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: torqueRed.withValues(alpha: 0.15),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.swap_horiz, color: torqueRed, size: 24),
+                    ),
+                  ),
                 ),
-                Expanded(child: _buildDropdown(to, (val) {
-                  setState(() => to = val);
+                Expanded(child: _buildDropdownColumn("To", to, (val) {
+                  setState(() => to = val!);
                   _convert();
-                }, Colors.white10)),
+                }, Colors.white24)),
               ],
             ),
+            const SizedBox(height: 40),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 45),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1A1A25),
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(color: torqueRed.withValues(alpha: 0.05), blurRadius: 20, spreadRadius: 1),
+                ],
+                border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+              ),
+              child: Column(
+                children: [
+                  const Text(
+                    "RESULT",
+                    style: TextStyle(color: Colors.white38, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      NumberFormatter.format(result),
+                      style: const TextStyle(fontSize: 54, fontWeight: FontWeight.bold, color: torqueRed),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    to.label.toUpperCase(),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 14, color: Colors.white54, fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+            ),
+
             const SizedBox(height: 30),
-            _buildResultCard(torqueRed),
+            const Center(
+              child: Text(
+                "CONVERTIFY v1.0",
+                style: TextStyle(color: Colors.white10, fontSize: 10, letterSpacing: 1),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildInputCard(Color accentColor) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        color: const Color(0xFF1A1A25),
-        border: Border.all(color: accentColor.withOpacity(0.3)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text("VALUE TO CONVERT",
-              style: TextStyle(color: Colors.white24, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2)),
-          TextField(
-            controller: _controller,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
-            style: const TextStyle(fontSize: 32, color: Colors.white, fontWeight: FontWeight.bold),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: "0.0",
-              hintStyle: const TextStyle(color: Colors.white10),
-              suffixText: from.label.split('(').last.replaceAll(')', ''),
-              suffixStyle: TextStyle(color: accentColor, fontSize: 16),
-            ),
-            onChanged: (_) => _convert(),
+  Widget _buildDropdownColumn(String title, TorqueUnit value, ValueChanged<TorqueUnit?> onChanged, Color accentColor) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title, style: const TextStyle(color: Colors.white38, fontSize: 12)),
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1A1A25),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: accentColor.withValues(alpha: 0.1)),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDropdown(TorqueUnit value, Function(TorqueUnit) onChanged, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: const Color(0xFF1A1A25),
-        border: Border.all(color: color.withOpacity(0.2)),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<TorqueUnit>(
-          value: value,
-          isExpanded: true,
-          dropdownColor: const Color(0xFF1A1A25),
-          icon: Icon(Icons.keyboard_arrow_down, color: color),
-          items: TorqueUnit.values.map((unit) => DropdownMenuItem(
-            value: unit,
-            child: Text(unit.label,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(color: Colors.white, fontSize: 12)),
-          )).toList(),
-          onChanged: (val) => onChanged(val!),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildResultCard(Color accentColor) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(35),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFF1A1A25), Color(0xFF0D0D15)],
-        ),
-        boxShadow: [
-          BoxShadow(color: accentColor.withOpacity(0.1), blurRadius: 20, spreadRadius: 1),
-        ],
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
-      ),
-      child: Column(
-        children: [
-          Text("OUTPUT POWER",
-              style: TextStyle(color: accentColor, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 20),
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(
-              NumberFormatter.format(result),
-              style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: Colors.white),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<TorqueUnit>(
+              value: value,
+              isExpanded: true,
+              dropdownColor: const Color(0xFF1A1A25),
+              icon: Icon(Icons.keyboard_arrow_down, color: accentColor, size: 20),
+              items: TorqueUnit.values.map((u) => DropdownMenuItem(
+                value: u,
+                child: Text(u.label,
+                    style: const TextStyle(color: Colors.white, fontSize: 13),
+                    overflow: TextOverflow.ellipsis
+                ),
+              )).toList(),
+              onChanged: onChanged,
             ),
           ),
-          const SizedBox(height: 10),
-          Text(
-            to.label.toUpperCase(),
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 14, color: Colors.white54, fontWeight: FontWeight.w600),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

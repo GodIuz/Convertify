@@ -13,7 +13,7 @@ class ConverterAngleScreen extends StatefulWidget {
 }
 
 class _ConverterAngleScreenState extends State<ConverterAngleScreen> {
-  final _controller = TextEditingController(text: "1");
+  final _controller = TextEditingController(text: "1.00");
   final _service = ConverterAngleService();
 
   AngleUnit from = AngleUnit.degree;
@@ -27,11 +27,20 @@ class _ConverterAngleScreenState extends State<ConverterAngleScreen> {
   }
 
   void _convert() {
+    HapticFeedback.lightImpact();
     final text = _controller.text.trim().replaceAll(',', '.');
-
     final value = double.tryParse(text) ?? 0;
     setState(() {
       result = _service.convertAngle(value: value, from: from, to: to);
+    });
+  }
+
+  void _swapUnits() {
+    setState(() {
+      final temp = from;
+      from = to;
+      to = temp;
+      _convert();
     });
   }
 
@@ -42,142 +51,160 @@ class _ConverterAngleScreenState extends State<ConverterAngleScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFF0B0B10),
       appBar: AppBar(
-        title: const Text("Angle Converter", style: TextStyle(fontWeight: FontWeight.bold)),
-        centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          "Angle Converter",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+        ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildInputCard(angleCyan),
-            const SizedBox(height: 20),
+            const Text("Value to Convert", style: TextStyle(color: Colors.white38, fontSize: 12)),
+            const SizedBox(height: 8),
+
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1A1A25),
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: angleCyan.withValues(alpha: 0.1)),
+              ),
+              child: TextField(
+                controller: _controller,
+                style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: "0.00",
+                  hintStyle: TextStyle(color: Colors.white10),
+                ),
+                onChanged: (_) => _convert(),
+              ),
+            ),
+
+            const SizedBox(height: 25),
+
             Row(
               children: [
-                Expanded(child: _buildDropdown(from, (val) {
-                  setState(() => from = val);
+                Expanded(child: _buildDropdownColumn("From", from, (val) {
+                  setState(() => from = val!);
                   _convert();
                 }, angleCyan)),
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      final temp = from; from = to; to = temp;
-                    });
-                    _convert();
-                  },
-                  icon: const Icon(Icons.sync_alt, color: angleCyan),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: GestureDetector(
+                    onTap: _swapUnits,
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: angleCyan.withValues(alpha: 0.15),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.swap_horiz, color: angleCyan, size: 24),
+                    ),
+                  ),
                 ),
-                Expanded(child: _buildDropdown(to, (val) {
-                  setState(() => to = val);
+
+                Expanded(child: _buildDropdownColumn("To", to, (val) {
+                  setState(() => to = val!);
                   _convert();
                 }, Colors.white24)),
               ],
             ),
-            const SizedBox(height: 30),
-            _buildResultCard(angleCyan),
+
+            const SizedBox(height: 40),
+
+            // 3. Μεγάλη Κάρτα Αποτελέσματος
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 45),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1A1A25),
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(color: angleCyan.withValues(alpha: 0.05), blurRadius: 20, spreadRadius: 1),
+                ],
+                border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+              ),
+              child: Column(
+                children: [
+                  const Text(
+                    "RESULT",
+                    style: TextStyle(color: Colors.white38, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      NumberFormatter.format(result),
+                      style: const TextStyle(fontSize: 54, fontWeight: FontWeight.bold, color: angleCyan),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    to.label.toUpperCase(),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 14, color: Colors.white54, fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 20),
+            const Center(
+              child: Text(
+                "CONVERTIFY v1.0",
+                style: TextStyle(color: Colors.white10, fontSize: 10, letterSpacing: 1),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
-// 1. Το κουτάκι της εισαγωγής (Input)
-  Widget _buildInputCard(Color accentColor) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        color: const Color(0xFF1A1A25),
-        // Χρησιμοποιούμε .withValues αντί για withOpacity για το 2026!
-        border: Border.all(color: accentColor.withValues(alpha: 0.3)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text("VALUE",
-              style: TextStyle(color: Colors.white24, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2)),
-          TextField(
-            controller: _controller,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
-            style: const TextStyle(fontSize: 32, color: Colors.white, fontWeight: FontWeight.bold),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: "0.0",
-              hintStyle: const TextStyle(color: Colors.white10),
-              suffixIcon: Icon(Icons.architecture, color: accentColor.withValues(alpha: 0.5)),
-            ),
-            onChanged: (_) => _convert(),
+
+  Widget _buildDropdownColumn(String title, AngleUnit value, ValueChanged<AngleUnit?> onChanged, Color accentColor) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title, style: const TextStyle(color: Colors.white38, fontSize: 12)),
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1A1A25),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: accentColor.withValues(alpha: 0.1)),
           ),
-        ],
-      ),
-    );
-  }
-
-  // 2. Το Dropdown
-  Widget _buildDropdown(AngleUnit value, Function(AngleUnit) onChanged, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: const Color(0xFF1A1A25),
-        border: Border.all(color: color.withValues(alpha: 0.2)),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<AngleUnit>(
-          value: value,
-          isExpanded: true,
-          dropdownColor: const Color(0xFF1A1A25),
-          icon: Icon(Icons.expand_more, color: color),
-          items: AngleUnit.values.map((unit) => DropdownMenuItem(
-            value: unit,
-            child: Text(unit.label,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(color: Colors.white, fontSize: 12)),
-          )).toList(),
-          onChanged: (val) => onChanged(val!),
-        ),
-      ),
-    );
-  }
-
-  // 3. Η κάρτα του αποτελέσματος
-  Widget _buildResultCard(Color accentColor) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(35),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFF1A1A25), Color(0xFF0D0D15)],
-        ),
-        boxShadow: [
-          BoxShadow(color: accentColor.withValues(alpha: 0.1), blurRadius: 20, spreadRadius: 1),
-        ],
-        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-      ),
-      child: Column(
-        children: [
-          Text("CONVERTED ANGLE",
-              style: TextStyle(color: accentColor, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 20),
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(
-              NumberFormatter.format(result),
-              style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: Colors.white),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<AngleUnit>(
+              value: value,
+              isExpanded: true,
+              dropdownColor: const Color(0xFF1A1A25),
+              icon: Icon(Icons.keyboard_arrow_down, color: accentColor, size: 20),
+              items: AngleUnit.values.map((u) => DropdownMenuItem(
+                value: u,
+                child: Text(u.label,
+                    style: const TextStyle(color: Colors.white, fontSize: 13),
+                    overflow: TextOverflow.ellipsis
+                ),
+              )).toList(),
+              onChanged: onChanged,
             ),
           ),
-          const SizedBox(height: 10),
-          Text(
-            to.label.toUpperCase(),
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 14, color: Colors.white54, fontWeight: FontWeight.w600),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

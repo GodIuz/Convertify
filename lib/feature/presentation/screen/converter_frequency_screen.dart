@@ -13,7 +13,7 @@ class ConverterFrequencyScreen extends StatefulWidget {
 }
 
 class _ConverterFrequencyScreenState extends State<ConverterFrequencyScreen> {
-  final _controller = TextEditingController(text: "1");
+  final _controller = TextEditingController(text: "1.00");
   final _service = ConverterFrequencyService();
 
   FrequencyUnit from = FrequencyUnit.megahertz;
@@ -28,14 +28,9 @@ class _ConverterFrequencyScreenState extends State<ConverterFrequencyScreen> {
 
   void _convert() {
     final text = _controller.text.trim().replaceAll(',', '.');
-
     final value = double.tryParse(text) ?? 0;
     setState(() {
-      result = _service.convertFrequency(
-          value: value,
-          from: from,
-          to: to
-      );
+      result = _service.convertFrequency(value: value, from: from, to: to);
     });
   }
 
@@ -45,148 +40,173 @@ class _ConverterFrequencyScreenState extends State<ConverterFrequencyScreen> {
       final temp = from;
       from = to;
       to = temp;
+      _convert();
     });
-    _convert();
   }
 
   @override
   Widget build(BuildContext context) {
-    const freqPurple = Color(0xFF6200EA);
+    const freqPurple = Color(0xFF6200EA); // Accent color για τη Συχνότητα
 
     return Scaffold(
       backgroundColor: const Color(0xFF0B0B10),
       appBar: AppBar(
-        title: const Text("Frequency Converter",
-            style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.1)),
-        centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          "Frequency Converter",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+        ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildInputCard(freqPurple),
+            const Text("Value to Convert", style: TextStyle(color: Colors.white38, fontSize: 12)),
+            const SizedBox(height: 8),
+
+            // 1. Μεγάλο Input Box
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1A1A25),
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: freqPurple.withValues(alpha: 0.1)),
+              ),
+              child: TextField(
+                controller: _controller,
+                style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: "0.00",
+                  hintStyle: TextStyle(color: Colors.white10),
+                ),
+                onChanged: (_) => _convert(),
+              ),
+            ),
+
             const SizedBox(height: 25),
+
+            // 2. Επιλογείς Μονάδων (From -> Swap -> To)
             Row(
               children: [
-                Expanded(child: _buildDropdown(from, (val) {
-                  setState(() => from = val);
+                Expanded(child: _buildDropdownColumn("From", from, (val) {
+                  setState(() => from = val!);
                   _convert();
                 }, freqPurple)),
 
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: IconButton(
-                    onPressed: _swapUnits,
-                    icon: const Icon(Icons.swap_horiz, color: freqPurple, size: 32),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: GestureDetector(
+                    onTap: _swapUnits,
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: freqPurple.withValues(alpha: 0.15),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.swap_horiz, color: freqPurple, size: 24),
+                    ),
                   ),
                 ),
 
-                Expanded(child: _buildDropdown(to, (val) {
-                  setState(() => to = val);
+                Expanded(child: _buildDropdownColumn("To", to, (val) {
+                  setState(() => to = val!);
                   _convert();
                 }, Colors.white24)),
               ],
             ),
 
-            const SizedBox(height: 35),
-            _buildResultCard(freqPurple),
+            const SizedBox(height: 40),
+
+            // 3. Κεντρική Κάρτα Αποτελέσματος
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 45),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1A1A25),
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(color: freqPurple.withValues(alpha: 0.05), blurRadius: 20, spreadRadius: 1),
+                ],
+                border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+              ),
+              child: Column(
+                children: [
+                  const Text(
+                    "RESULT",
+                    style: TextStyle(color: Colors.white38, fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      NumberFormatter.format(result),
+                      style: const TextStyle(fontSize: 54, fontWeight: FontWeight.bold, color: freqPurple),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    to.label.toUpperCase(),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 14, color: Colors.white54, fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 30),
+            const Center(
+              child: Text(
+                "CONVERTIFY v1.0",
+                style: TextStyle(color: Colors.white10, fontSize: 10, letterSpacing: 1),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildInputCard(Color accentColor) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        color: const Color(0xFF1A1A25),
-        border: Border.all(color: accentColor.withValues(alpha: 0.3)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text("FREQUENCY VALUE",
-              style: TextStyle(color: Colors.white24, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2)),
-          TextField(
-            controller: _controller,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
-            style: const TextStyle(fontSize: 34, color: Colors.white, fontWeight: FontWeight.bold),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: "0.0",
-              hintStyle: const TextStyle(color: Colors.white10),
-              suffixIcon: Icon(Icons.waves, color: accentColor.withValues(alpha: 0.6)),
-            ),
-            onChanged: (_) => _convert(),
+  Widget _buildDropdownColumn(String title, FrequencyUnit value, ValueChanged<FrequencyUnit?> onChanged, Color accentColor) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title, style: const TextStyle(color: Colors.white38, fontSize: 12)),
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1A1A25),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: accentColor.withValues(alpha: 0.1)),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDropdown(FrequencyUnit value, Function(FrequencyUnit) onChanged, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: const Color(0xFF1A1A25),
-        border: Border.all(color: color.withValues(alpha: 0.2)),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<FrequencyUnit>(
-          value: value,
-          isExpanded: true,
-          dropdownColor: const Color(0xFF1A1A25),
-          items: FrequencyUnit.values.map((u) => DropdownMenuItem(
-            value: u,
-            child: Text(u.label, style: const TextStyle(color: Colors.white, fontSize: 13, overflow: TextOverflow.ellipsis)),
-          )).toList(),
-          onChanged: (val) => onChanged(val!),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildResultCard(Color accentColor) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(40),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(32),
-        gradient: LinearGradient(
-          colors: [const Color(0xFF1A1A25), const Color(0xFF050505)],
-          begin: Alignment.topLeft, end: Alignment.bottomRight,
-        ),
-        boxShadow: [
-          BoxShadow(color: accentColor.withValues(alpha: 0.1), blurRadius: 40, spreadRadius: 2)
-        ],
-        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-      ),
-      child: Column(
-        children: [
-          Text("CONVERTED FREQUENCY",
-              style: TextStyle(color: accentColor, fontSize: 12, letterSpacing: 2.5, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 25),
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(
-              NumberFormatter.format(result),
-              style: const TextStyle(fontSize: 56, fontWeight: FontWeight.bold, color: Colors.white),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<FrequencyUnit>(
+              value: value,
+              isExpanded: true,
+              dropdownColor: const Color(0xFF1A1A25),
+              icon: Icon(Icons.keyboard_arrow_down, color: accentColor, size: 20),
+              items: FrequencyUnit.values.map((u) => DropdownMenuItem(
+                value: u,
+                child: Text(u.label,
+                    style: const TextStyle(color: Colors.white, fontSize: 13),
+                    overflow: TextOverflow.ellipsis
+                ),
+              )).toList(),
+              onChanged: onChanged,
             ),
           ),
-          const SizedBox(height: 10),
-          Text(
-            to.label.toUpperCase(),
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 14, color: Colors.white38, fontWeight: FontWeight.bold),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
