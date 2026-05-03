@@ -1,4 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:convertify/feature/presentation/screen/converter_electric_screen.dart';
 import 'converter_angel_screen.dart';
 import 'converter_area_screen.dart';
 import 'converter_cooking_screen.dart';
@@ -24,6 +25,7 @@ import 'package:flutter/material.dart';
 import 'converter_currency_screen.dart';
 import 'converter_weight_screen.dart';
 import 'converter_numeral_screen.dart';
+import 'converter_typography_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -194,12 +196,14 @@ class HomeScreen extends StatelessWidget {
             _CategoryCard(
                 title: "Electric",
                 icon: Icons.electrical_services,
-                color: Colors.greenAccent
+                color: Colors.greenAccent,
+                screen: ConverterElectricScreen(),
             ),
             _CategoryCard(
                 title: "Typography",
                 icon: Icons.text_fields,
-                color: Colors.lightGreen
+                color: Colors.lightGreen,
+                screen: ConverterTypographyScreen(),
             ),
             _CategoryCard(
                 title: "Numeral",

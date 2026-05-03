@@ -1,0 +1,20 @@
+enum ElectricUnit {
+  ampere,
+  milliampere,
+  microampere,
+  volt,
+  millivolt,
+  kilovolt,
+  ohm,
+  kilohm,
+  megohm,
+  farad,
+  microfarad,
+  nanofarad,
+  picofarad,
+  henry,
+  millihenry,
+  coulomb,
+  ah,
+  mah
+}
