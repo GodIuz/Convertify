@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:convertify/feature/presentation/screen/converter_angel_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_area_screen.dart';
+import 'package:convertify/feature/presentation/screen/converter_cooking_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_density_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_digital_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_energy_screen.dart';
@@ -8,12 +9,15 @@ import 'package:convertify/feature/presentation/screen/converter_flow_rate_scree
 import 'package:convertify/feature/presentation/screen/converter_force_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_frequency_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_fuel_economy_screen.dart';
+import 'package:convertify/feature/presentation/screen/converter_illuminance_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_power_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_pressure_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_speed_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_time_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_torque_screen.dart';
 import 'package:convertify/feature/presentation/screen/converter_volume_screen.dart';
+import 'package:convertify/feature/presentation/screen/trigonometry_screen.dart';
+import 'package:convertify/feature/presentation/screen/converter_radiation_screen.dart';
 import 'converter_metric_screen.dart';
 import 'converter_temperature_screen.dart';
 import 'package:flutter/material.dart';
@@ -166,7 +170,26 @@ class HomeScreen extends StatelessWidget {
                 title: "Illuminance",
                 icon: Icons.wb_sunny,
                 color: Colors.red,
+                screen: ConverterIlluminanceScreen()
             ),
+            _CategoryCard(
+                title: "Radiation",
+                icon: Icons.radar,
+                color: Colors.amber,
+                screen: RadiationScreen(),
+            ),
+            _CategoryCard(
+                title: "Cooking",
+                icon: Icons.restaurant,
+                color: Colors.purpleAccent,
+                screen: ConverterCookingScreen(),
+            ),
+            _CategoryCard(
+                title: "Trigonometry",
+                icon: Icons.architecture,
+                color: Colors.tealAccent,
+                screen: TrigonometryScreen(),
+            )
           ],
         ),
       ),
@@ -267,7 +290,7 @@ class _CategoryCard extends StatelessWidget {
         title: const Row(
           children: [
             Icon(Icons.wifi_off, color: Colors.orange),
-            const SizedBox(width: 10),
+            SizedBox(width: 10),
             Text("No Connection", style: TextStyle(color: Colors.white)),
           ],
         ),

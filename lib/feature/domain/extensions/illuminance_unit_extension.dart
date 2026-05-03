@@ -6,7 +6,7 @@ extension IlluminanceUnitExtension on IlluminanceUnit{
       case IlluminanceUnit.lux:
         return "Lux (lx)";
       case IlluminanceUnit.footcandle:
-        return "Foot-candle (fc)";
+        return "Foot Candle (fc)";
       case IlluminanceUnit.phot:
         return "Phot (ph)";
       case IlluminanceUnit.nit:

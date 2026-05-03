@@ -6,7 +6,9 @@ import FlutterMacOS
 import Foundation
 
 import connectivity_plus
+import in_app_purchase_storekit
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   ConnectivityPlusPlugin.register(with: registry.registrar(forPlugin: "ConnectivityPlusPlugin"))
+  InAppPurchasePlugin.register(with: registry.registrar(forPlugin: "InAppPurchasePlugin"))
 }

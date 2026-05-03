@@ -115,6 +115,11 @@ class _MainScreenState extends State<MainScreen> {
             label: 'Search',
           ),
           NavigationDestination(
+            selectedIcon: Icon(Icons.settings, color: Colors.cyanAccent),
+            icon: Icon(Icons.settings, color: Colors.white54),
+            label: 'Settings'
+          ),
+          NavigationDestination(
             selectedIcon: Icon(Icons.auto_awesome, color: Colors.amber),
             icon: Icon(Icons.auto_awesome_outlined, color: Colors.white54),
             label: 'Upgrade',
@@ -130,7 +135,11 @@ class _MainScreenState extends State<MainScreen> {
         child: Text("Search Coming Soon", style: TextStyle(color: Colors.white38))
     ),
     const Center(
+        child: Text("Settings Comming Soon", style:TextStyle(color:Colors.white38))
+    ),
+    const Center(
         child: Text("Upgrade to Pro", style: TextStyle(color: Colors.white38))
     ),
+
   ];
 }
