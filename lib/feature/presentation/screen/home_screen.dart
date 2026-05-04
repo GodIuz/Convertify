@@ -1,4 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:convertify/feature/presentation/screen/converter_document_format_screen.dart';
 import 'converter_electric_screen.dart';
 import 'converter_image_screen.dart';
 import 'converter_angel_screen.dart';
@@ -221,7 +222,8 @@ class HomeScreen extends StatelessWidget {
             _CategoryCard(
                 title: "Document Converter",
                 icon: Icons.document_scanner,
-                color: Colors.lightBlue
+                color: Colors.lightBlue,
+                screen: ConverterDocumentFormatScreen(),
             )
           ],
         ),
