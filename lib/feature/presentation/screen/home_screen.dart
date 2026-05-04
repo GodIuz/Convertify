@@ -1,5 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:convertify/feature/presentation/screen/converter_electric_screen.dart';
+import 'converter_electric_screen.dart';
+import 'converter_image_screen.dart';
 import 'converter_angel_screen.dart';
 import 'converter_area_screen.dart';
 import 'converter_cooking_screen.dart';
@@ -210,6 +211,17 @@ class HomeScreen extends StatelessWidget {
                 icon: Icons.tag,
                 color: Colors.deepPurpleAccent,
                 screen: ConverterNumeralScreen()
+            ),
+            _CategoryCard(
+                title: "Image Converter",
+                icon: Icons.image,
+                color: Colors.lightGreen,
+                screen: ConverterImageScreen(),
+            ),
+            _CategoryCard(
+                title: "Document Converter",
+                icon: Icons.document_scanner,
+                color: Colors.lightBlue
             )
           ],
         ),
