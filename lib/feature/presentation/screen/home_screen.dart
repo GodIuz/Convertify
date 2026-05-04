@@ -223,6 +223,7 @@ class HomeScreen extends StatelessWidget {
                 title: "Document Converter",
                 icon: Icons.document_scanner,
                 color: Colors.lightBlue,
+                requiresInternet: true,
                 screen: ConverterDocumentFormatScreen(),
             )
           ],
@@ -330,7 +331,7 @@ class _CategoryCard extends StatelessWidget {
           ],
         ),
         content: const Text(
-          "Currency rates require an active internet connection. Please check your settings.",
+          "This feature requires an active internet connection. Please check your settings.",
           style: TextStyle(color: Colors.white70),
         ),
         actions: [

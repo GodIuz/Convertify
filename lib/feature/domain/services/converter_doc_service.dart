@@ -10,6 +10,7 @@ class ConverterDocService {
     required String targetFormat,
   }) async {
     try {
+      print("Step 1: Sending file to CloudConvert...");
       final response = await http.post(
         Uri.parse('https://api.cloudconvert.com/v2/jobs'),
         headers: {
@@ -35,30 +36,51 @@ class ConverterDocService {
           }
         }),
       );
+
       if (response.statusCode == 201) {
         var jobData = jsonDecode(response.body);
         String jobId = jobData['data']['id'];
+        print("Step 2: Job Created! ID: $jobId. Waiting for conversion..."); // LOG
+
         String? downloadUrl;
-        while (downloadUrl == null) {
+        int attempts = 0;
+
+        while (downloadUrl == null && attempts < 30) {
+          attempts++;
           await Future.delayed(const Duration(seconds: 2));
+
           final statusRes = await http.get(
             Uri.parse('https://api.cloudconvert.com/v2/jobs/$jobId'),
             headers: {'Authorization': 'Bearer $apiKey'},
           );
+
           var statusData = jsonDecode(statusRes.body);
           var tasks = statusData['data']['tasks'] as List;
+
           var exportTask = tasks.firstWhere((t) => t['operation'] == 'export/url');
+          print("Status: ${exportTask['status']} (Attempt $attempts)"); // LOG
+
           if (exportTask['status'] == 'finished') {
             downloadUrl = exportTask['result']['files'][0]['url'];
-          } else if (exportTask['status'] == 'error') {
-            throw Exception("CloudConvert Failed");
+            print("Step 3: File ready! URL: $downloadUrl"); // LOG
+          } else if (exportTask['status'] == 'failed') {
+            print("Error: Conversion failed on CloudConvert servers.");
+            return null;
           }
         }
-        final fileRes = await http.get(Uri.parse(downloadUrl));
-        return fileRes.bodyBytes;
+
+        if (downloadUrl != null) {
+          print("Step 4: Downloading final file..."); // LOG
+          final fileRes = await http.get(Uri.parse(downloadUrl));
+          print("Step 5: Download complete! Size: ${fileRes.bodyBytes.length} bytes"); // LOG
+          return fileRes.bodyBytes;
+        }
+      } else {
+        print("API Error: ${response.statusCode} - ${response.body}"); // LOG
       }
       return null;
     } catch (e) {
+      print("Exception: $e");
       return null;
     }
   }
