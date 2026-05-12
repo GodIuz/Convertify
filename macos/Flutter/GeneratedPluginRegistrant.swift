@@ -6,7 +6,7 @@ import FlutterMacOS
 import Foundation
 
 import connectivity_plus
-import ffmpeg_kit_flutter_full_gpl
+import ffmpeg_kit_flutter_new
 import file_picker
 import file_saver
 import flutter_image_compress_macos
