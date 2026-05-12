@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:totalUnit/feature/domain/enums/currency_unit.dart';
 
@@ -12,19 +13,24 @@ class ConverterCurrencyService {
     required CurrencyUnit to,
   }) async {
     if (from == to) return amount;
-    if (amount == 0) return 0;
+    if (amount <= 0) return 0.0;
 
-      try {
-        final url = Uri.parse('$_baseUrl/${CurrencyUnit.cad}/${CurrencyUnit.cad}/$amount');
-        final response = await http.get(url);
-
-        if (response.statusCode == 200) {
-          final data = json.decode(response.body);
-          return (data['conversion_result'] as num).toDouble();
-        }
-        return 0.0;
-      } catch (e) {
-        return 0.0;
+    try {
+      final String fromCode = from.name.toUpperCase();
+      final String toCode = to.name.toUpperCase();
+      final url = Uri.parse('$_baseUrl/$fromCode/$toCode/$amount');
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return (data['conversion_result'] as num).toDouble();
+      } else {
+        throw Exception("Failed to load conversion: ${response.statusCode}");
       }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error in conversion: $e");
+      }
+      return 0.0;
     }
   }
+}

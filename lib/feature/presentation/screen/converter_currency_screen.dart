@@ -5,7 +5,6 @@ import 'package:totalUnit/feature/domain/enums/currency_unit.dart';
 import 'package:totalUnit/feature/domain/extensions/currency_unit_extension.dart';
 import 'package:totalUnit/feature/domain/services/converter_currency_service.dart';
 
-
 class ConverterCurrencyScreen extends StatefulWidget {
   const ConverterCurrencyScreen({super.key});
 
