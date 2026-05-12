@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:convertify/feature/domain/enums/density_unit.dart';
-import 'package:convertify/feature/domain/services/converter_density_service.dart';
-import 'package:convertify/feature/domain/extensions/density_unit_extension.dart';
+import 'package:totalUnit/feature/domain/enums/density_unit.dart';
+import 'package:totalUnit/feature/domain/services/converter_density_service.dart';
+import 'package:totalUnit/feature/domain/extensions/density_unit_extension.dart';
 
 class DensityConverterScreen extends StatefulWidget {
   const DensityConverterScreen({super.key});

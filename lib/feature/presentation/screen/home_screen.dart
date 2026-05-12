@@ -1,5 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:convertify/feature/presentation/screen/converter_document_format_screen.dart';
+import 'package:totalUnit/feature/presentation/screen/converter_document_format_screen.dart';
 import 'converter_electric_screen.dart';
 import 'converter_image_screen.dart';
 import 'converter_angel_screen.dart';
@@ -28,6 +28,7 @@ import 'converter_currency_screen.dart';
 import 'converter_weight_screen.dart';
 import 'converter_numeral_screen.dart';
 import 'converter_typography_screen.dart';
+import 'converter_sound_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -40,7 +41,7 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
-          "Convertify",
+          "Total Unit",
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -237,6 +238,7 @@ class HomeScreen extends StatelessWidget {
                 title: "Sound Converter",
                 icon: Icons.surround_sound,
                 color: Colors.redAccent,
+                screen: ConverterSoundScreen(),
               ),
             ),
           ),
@@ -362,11 +364,13 @@ class _LargeCategoryCard extends StatelessWidget {
   final String title;
   final IconData icon;
   final Color color;
+  final Widget? screen; // Η παράμετρος για την οθόνη
 
   const _LargeCategoryCard({
     required this.title,
     required this.icon,
     required this.color,
+    this.screen, // required screen
   });
 
   @override
@@ -384,9 +388,17 @@ class _LargeCategoryCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
         onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("$title is under development")),
-          );
+          if (screen != null) {
+            // Πλοήγηση στην οθόνη
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => screen!),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("$title is under development")),
+            );
+          }
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

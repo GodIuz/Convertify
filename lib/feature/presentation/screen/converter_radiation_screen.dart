@@ -1,6 +1,6 @@
-import 'package:convertify/feature/domain/enums/radiation_unit.dart';
-import 'package:convertify/feature/domain/extensions/radiation_unit_extension.dart';
-import 'package:convertify/feature/domain/services/converter_radiation_service.dart';
+import 'package:totalUnit/feature/domain/enums/radiation_unit.dart';
+import 'package:totalUnit/feature/domain/extensions/radiation_unit_extension.dart';
+import 'package:totalUnit/feature/domain/services/converter_radiation_service.dart';
 import 'package:flutter/material.dart';
 
 class RadiationScreen extends StatefulWidget {

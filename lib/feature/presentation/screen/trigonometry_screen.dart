@@ -1,7 +1,7 @@
-import 'package:convertify/feature/domain/enums/trigonometric_category.dart';
-import 'package:convertify/feature/domain/enums/trigonometric_unit.dart';
-import 'package:convertify/feature/domain/extensions/trigonometric_unit_extension.dart';
-import 'package:convertify/feature/domain/services/trigonometry_service.dart';
+import 'package:totalUnit/feature/domain/enums/trigonometric_category.dart';
+import 'package:totalUnit/feature/domain/enums/trigonometric_unit.dart';
+import 'package:totalUnit/feature/domain/extensions/trigonometric_unit_extension.dart';
+import 'package:totalUnit/feature/domain/services/trigonometry_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

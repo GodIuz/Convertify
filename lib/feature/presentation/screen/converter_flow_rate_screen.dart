@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:convertify/feature/domain/enums/flow_rate_unit.dart';
-import 'package:convertify/feature/domain/extensions/flow_rate_unit_extensiom.dart';
-import 'package:convertify/feature/domain/services/converter_flow_rate_service.dart';
+import 'package:totalUnit/feature/domain/enums/flow_rate_unit.dart';
+import 'package:totalUnit/feature/domain/extensions/flow_rate_unit_extensiom.dart';
+import 'package:totalUnit/feature/domain/services/converter_flow_rate_service.dart';
 
 class FlowRateConverterScreen extends StatefulWidget {
   const FlowRateConverterScreen({super.key});

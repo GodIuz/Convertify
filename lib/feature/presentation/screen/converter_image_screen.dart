@@ -1,8 +1,8 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:gal/gal.dart';
-import 'package:convertify/feature/domain/enums/image_format.dart';
-import 'package:convertify/feature/domain/extensions/image_format_extension.dart';
-import 'package:convertify/feature/domain/services/converter_image_format_service.dart';
+import 'package:totalUnit/feature/domain/enums/image_format.dart';
+import 'package:totalUnit/feature/domain/extensions/image_format_extension.dart';
+import 'package:totalUnit/feature/domain/services/converter_image_format_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

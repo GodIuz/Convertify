@@ -1,7 +1,7 @@
-import 'package:convertify/core/utils/number_formatter.dart';
-import 'package:convertify/feature/domain/enums/fuel_economy_unit.dart';
-import 'package:convertify/feature/domain/extensions/fuel_economy_unit_extension.dart';
-import 'package:convertify/feature/domain/services/converter_fuel_economy_service.dart';
+import 'package:totalUnit/core/utils/number_formatter.dart';
+import 'package:totalUnit/feature/domain/enums/fuel_economy_unit.dart';
+import 'package:totalUnit/feature/domain/extensions/fuel_economy_unit_extension.dart';
+import 'package:totalUnit/feature/domain/services/converter_fuel_economy_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

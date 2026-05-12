@@ -1,6 +1,6 @@
-import 'package:convertify/feature/domain/enums/cooking_unit.dart';
-import 'package:convertify/feature/domain/extensions/cooking_unit_extension.dart';
-import 'package:convertify/feature/domain/services/converter_cooking_service.dart';
+import 'package:totalUnit/feature/domain/enums/cooking_unit.dart';
+import 'package:totalUnit/feature/domain/extensions/cooking_unit_extension.dart';
+import 'package:totalUnit/feature/domain/services/converter_cooking_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

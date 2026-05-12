@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:convertify/feature/presentation/screen/home_screen.dart';
+import 'package:totalUnit/feature/presentation/screen/home_screen.dart';
+import 'settings_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -109,7 +110,7 @@ class _MainScreenState extends State<MainScreen> {
             Image.asset('assets/images/splash_logo.png', width: 120),
             const SizedBox(height: 25),
             const Text(
-              "Convertify",
+              "Total Unit",
               style: TextStyle(
                 color: Colors.cyanAccent,
                 fontSize: 32,
@@ -141,10 +142,4 @@ class UpgradeProScreen extends StatelessWidget {
   const UpgradeProScreen({super.key});
   @override
   Widget build(BuildContext context) => const Center(child: Text("Go Ad-Free & Unlimited", style: TextStyle(color: Colors.white38, fontWeight: FontWeight.bold)));
-}
-
-class SettingsScreen extends StatelessWidget{
-  const SettingsScreen({super.key});
-  @override
-  Widget build(BuildContext context) => const Center(child: Text("Settings", style: TextStyle(color: Colors.white38, fontWeight: FontWeight.bold)));
 }

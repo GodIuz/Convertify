@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:convertify/feature/domain/enums/numeral_unit.dart';
-import 'package:convertify/feature/domain/extensions/numeral_unit_extension.dart';
-import 'package:convertify/feature/domain/services/converter_numeral_service.dart';
+import 'package:totalUnit/feature/domain/enums/numeral_unit.dart';
+import 'package:totalUnit/feature/domain/extensions/numeral_unit_extension.dart';
+import 'package:totalUnit/feature/domain/services/converter_numeral_service.dart';
 
 class ConverterNumeralScreen extends StatefulWidget {
   const ConverterNumeralScreen({super.key});

@@ -1,7 +1,7 @@
-import 'package:convertify/core/utils/number_formatter.dart';
-import 'package:convertify/feature/domain/enums/speed_unit.dart';
-import 'package:convertify/feature/domain/extensions/speed_unit_extension.dart';
-import 'package:convertify/feature/domain/services/converter_speed_service.dart';
+import 'package:totalUnit/core/utils/number_formatter.dart';
+import 'package:totalUnit/feature/domain/enums/speed_unit.dart';
+import 'package:totalUnit/feature/domain/extensions/speed_unit_extension.dart';
+import 'package:totalUnit/feature/domain/services/converter_speed_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
