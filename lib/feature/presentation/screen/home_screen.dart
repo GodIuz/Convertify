@@ -26,6 +26,7 @@ import 'package:totalUnit/feature/presentation/screen/converter_temperature_scre
 import 'package:totalUnit/feature/presentation/screen/converter_time_screen.dart';
 import 'package:totalUnit/feature/presentation/screen/converter_torque_screen.dart';
 import 'package:totalUnit/feature/presentation/screen/converter_typography_screen.dart';
+import 'package:totalUnit/feature/presentation/screen/converter_video_screen.dart';
 import 'package:totalUnit/feature/presentation/screen/converter_volume_screen.dart';
 import 'package:totalUnit/feature/presentation/screen/converter_weight_screen.dart';
 import 'package:totalUnit/feature/presentation/screen/trigonometry_screen.dart';
@@ -229,20 +230,32 @@ class HomeScreen extends StatelessWidget {
                   color: Colors.lightBlue,
                   screen: ConverterDocumentFormatScreen(),
                 ),
+                _CategoryCard(
+                  title: "Sound Converter",
+                  icon: Icons.surround_sound,
+                  color: Colors.redAccent,
+                  screen: ConverterSoundScreen(),
+                ),
+                _CategoryCard(
+                  title: "Video Converter",
+                  icon: Icons.video_camera_back,
+                  color: Colors.cyanAccent,
+                  screen: ConverterVideoScreen(),
+                )
               ],
             ),
           ),
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
-            sliver: SliverToBoxAdapter(
-              child: _LargeCategoryCard(
-                title: "Sound Converter",
-                icon: Icons.surround_sound,
-                color: Colors.redAccent,
-                screen: ConverterSoundScreen(),
-              ),
-            ),
-          ),
+          // SliverPadding(
+          //   padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
+          //   sliver: SliverToBoxAdapter(
+          //     child: _LargeCategoryCard(
+          //       title: "Video Converter",
+          //       icon: Icons.video_camera_back,
+          //       color: Colors.cyanAccent,
+          //       screen: ConverterVideoScreen(),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
@@ -361,62 +374,61 @@ class _CategoryCard extends StatelessWidget {
   }
 }
 
-class _LargeCategoryCard extends StatelessWidget {
-  final String title;
-  final IconData icon;
-  final Color color;
-  final Widget? screen; // Η παράμετρος για την οθόνη
-
-  const _LargeCategoryCard({
-    required this.title,
-    required this.icon,
-    required this.color,
-    this.screen, // required screen
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 100,
-      decoration: BoxDecoration(
-        color: const Color(0xFF12121A),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withOpacity(0.6), width: 1.2),
-        boxShadow: [
-          BoxShadow(color: color.withOpacity(0.25), blurRadius: 20, spreadRadius: 1),
-        ],
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(20),
-        onTap: () {
-          if (screen != null) {
-            // Πλοήγηση στην οθόνη
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => screen!),
-            );
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("$title is under development")),
-            );
-          }
-        },
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: color, size: 42),
-            const SizedBox(width: 20),
-            Text(
-              title,
-              style: TextStyle(
-                color: Colors.white.withOpacity(0.9),
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+// class _LargeCategoryCard extends StatelessWidget {
+//   final String title;
+//   final IconData icon;
+//   final Color color;
+//   final Widget? screen;
+//
+//   const _LargeCategoryCard({
+//     required this.title,
+//     required this.icon,
+//     required this.color,
+//     this.screen,
+//   });
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       height: 100,
+//       decoration: BoxDecoration(
+//         color: const Color(0xFF12121A),
+//         borderRadius: BorderRadius.circular(20),
+//         border: Border.all(color: color.withOpacity(0.6), width: 1.2),
+//         boxShadow: [
+//           BoxShadow(color: color.withOpacity(0.25), blurRadius: 20, spreadRadius: 1),
+//         ],
+//       ),
+//       child: InkWell(
+//         borderRadius: BorderRadius.circular(20),
+//         onTap: () {
+//           if (screen != null) {
+//             Navigator.push(
+//               context,
+//               MaterialPageRoute(builder: (context) => screen!),
+//             );
+//           } else {
+//             ScaffoldMessenger.of(context).showSnackBar(
+//               SnackBar(content: Text("$title is under development")),
+//             );
+//           }
+//         },
+//         child: Row(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Icon(icon, color: color, size: 42),
+//             const SizedBox(width: 20),
+//             Text(
+//               title,
+//               style: TextStyle(
+//                 color: Colors.white.withOpacity(0.9),
+//                 fontSize: 20,
+//                 fontWeight: FontWeight.bold,
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
