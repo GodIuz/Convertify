@@ -1,10 +1,26 @@
-import 'package:convertify/feature/presentation/screen/main_screen.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:convertify/services/consent_service.dart';
+import 'package:convertify/feature/presentation/screen/main_screen.dart';
 
-void main() {
+void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  if (Platform.isAndroid || Platform.isIOS) {
+    try {
+      await ConsentService.initConsent();
+      await MobileAds.instance.initialize();
+      debugPrint("AdMob & UMP αρχικοποιήθηκαν επιτυχώς.");
+    } catch (e) {
+      debugPrint("Σφάλμα κατά την αρχικοποίηση διαφημίσεων: $e");
+    }
+  } else {
+    debugPrint("Οι διαφημίσεις παρακάμπτονται: Μη υποστηριζόμενη πλατφόρμα.");
+  }
+  FlutterNativeSplash.remove();
+
   runApp(const MyApp());
 }
 
@@ -18,6 +34,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: const Color(0xFF0B0B10),
+        primaryColor: const Color(0xFF0B0B10),
       ),
       home: const MainScreen(),
     );

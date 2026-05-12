@@ -49,185 +49,198 @@ class HomeScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: GridView.count(
-          crossAxisCount: 2,
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
-          children: const [
-            _CategoryCard(
-              title: "Length",
-              icon: Icons.straighten,
-              color: Colors.cyan,
-              screen: ConverterMetricScreen()
+      body: CustomScrollView(
+        slivers: [
+          SliverPadding(
+            padding: const EdgeInsets.all(16),
+            sliver: SliverGrid.count(
+              crossAxisCount: 2,
+              mainAxisSpacing: 16,
+              crossAxisSpacing: 16,
+              children: const [
+                _CategoryCard(
+                    title: "Length",
+                    icon: Icons.straighten,
+                    color: Colors.cyan,
+                    screen: ConverterMetricScreen()
+                ),
+                _CategoryCard(
+                  title: "Weight",
+                  icon: Icons.monitor_weight,
+                  color: Colors.purple,
+                  screen: ConverterWeightScreen(),
+                ),
+                _CategoryCard(
+                  title: "Temperature",
+                  icon: Icons.thermostat,
+                  color: Colors.orange,
+                  screen: ConverterTemperatureScreen(),
+                ),
+                _CategoryCard(
+                    title: "Currency",
+                    icon: Icons.attach_money,
+                    color: Colors.green,
+                    requiresInternet: true,
+                    screen: ConverterCurrencyScreen()
+                ),
+                _CategoryCard(
+                  title: "Speed",
+                  icon: Icons.speed,
+                  color: Colors.tealAccent,
+                  screen: ConverterSpeedScreen(),
+                ),
+                _CategoryCard(
+                  title: "Storage",
+                  icon: Icons.storage,
+                  color: Colors.red,
+                  screen: ConverterDigitalScreen(),
+                ),
+                _CategoryCard(
+                  title: "Time",
+                  icon: Icons.timer,
+                  color: Colors.brown,
+                  screen: TimeConverterScreen(),
+                ),
+                _CategoryCard(
+                  title: "Area",
+                  icon: Icons.crop_square,
+                  color: Colors.lime,
+                  screen: ConverterAreaScreen(),
+                ),
+                _CategoryCard(
+                  title: "Volume",
+                  icon: Icons.local_drink,
+                  color: Colors.blueGrey,
+                  screen: ConverterVolumeScreen(),
+                ),
+                _CategoryCard(
+                    title: "Pressure",
+                    icon: Icons.compress,
+                    color: Colors.pinkAccent,
+                    screen: ConverterPressureScreen()
+                ),
+                _CategoryCard(
+                  title: "Energy",
+                  icon: Icons.energy_savings_leaf,
+                  color: Colors.lime,
+                  screen: ConverterEnergyScreen(),
+                ),
+                _CategoryCard(
+                  title: "Power",
+                  icon: Icons.power,
+                  color: Colors.blue,
+                  screen: ConverterPowerScreen(),
+                ),
+                _CategoryCard(
+                  title: "Angle",
+                  icon: Icons.change_history,
+                  color: Colors.green,
+                  screen: ConverterAngleScreen(),
+                ),
+                _CategoryCard(
+                  title: "Fuel Economy",
+                  icon: Icons.local_gas_station,
+                  color: Colors.indigo,
+                  screen: ConverterFuelScreen(),
+                ),
+                _CategoryCard(
+                  title: "Frequency",
+                  icon: Icons.graphic_eq,
+                  color: Colors.pink,
+                  screen: ConverterFrequencyScreen(),
+                ),
+                _CategoryCard(
+                    title: "Force",
+                    icon: Icons.sports_martial_arts,
+                    color: Colors.yellowAccent,
+                    screen: ConverterForceScreen()
+                ),
+                _CategoryCard(
+                  title: "Torque",
+                  icon: Icons.settings,
+                  color: Colors.amberAccent,
+                  screen: ConverterTorqueScreen(),
+                ),
+                _CategoryCard(
+                  title: "Density",
+                  icon: Icons.layers,
+                  color: Colors.deepOrange,
+                  screen: DensityConverterScreen(),
+                ),
+                _CategoryCard(
+                  title: "Flow Rate",
+                  icon: Icons.water_drop,
+                  color: Colors.tealAccent,
+                  screen: FlowRateConverterScreen(),
+                ),
+                _CategoryCard(
+                    title: "Illuminance",
+                    icon: Icons.wb_sunny,
+                    color: Colors.red,
+                    screen: ConverterIlluminanceScreen()
+                ),
+                _CategoryCard(
+                  title: "Radiation",
+                  icon: Icons.radar,
+                  color: Colors.amber,
+                  screen: RadiationScreen(),
+                ),
+                _CategoryCard(
+                  title: "Cooking",
+                  icon: Icons.restaurant,
+                  color: Colors.purpleAccent,
+                  screen: ConverterCookingScreen(),
+                ),
+                _CategoryCard(
+                  title: "Trigonometry",
+                  icon: Icons.architecture,
+                  color: Colors.tealAccent,
+                  screen: TrigonometryScreen(),
+                ),
+                _CategoryCard(
+                  title: "Electric",
+                  icon: Icons.electrical_services,
+                  color: Colors.greenAccent,
+                  screen: ConverterElectricScreen(),
+                ),
+                _CategoryCard(
+                  title: "Typography",
+                  icon: Icons.text_fields,
+                  color: Colors.lightGreen,
+                  screen: ConverterTypographyScreen(),
+                ),
+                _CategoryCard(
+                    title: "Numeral",
+                    icon: Icons.tag,
+                    color: Colors.deepPurpleAccent,
+                    screen: ConverterNumeralScreen()
+                ),
+                _CategoryCard(
+                  title: "Image Converter",
+                  icon: Icons.image,
+                  color: Colors.lightGreen,
+                  screen: ConverterImageScreen(),
+                ),
+                _CategoryCard(
+                  title: "Document Converter",
+                  icon: Icons.document_scanner,
+                  color: Colors.lightBlue,
+                  screen: ConverterDocumentFormatScreen(),
+                ),
+              ],
             ),
-            _CategoryCard(
-              title: "Weight",
-              icon: Icons.monitor_weight,
-              color: Colors.purple,
-              screen: ConverterWeightScreen(),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
+            sliver: SliverToBoxAdapter(
+              child: _LargeCategoryCard(
+                title: "Sound Converter",
+                icon: Icons.surround_sound,
+                color: Colors.redAccent,
+              ),
             ),
-            _CategoryCard(
-              title: "Temperature",
-              icon: Icons.thermostat,
-              color: Colors.orange,
-              screen: ConverterTemperatureScreen(),
-            ),
-            _CategoryCard(
-              title: "Currency",
-              icon: Icons.attach_money,
-              color: Colors.green,
-              requiresInternet: true,
-              screen: ConverterCurrencyScreen()
-            ),
-            _CategoryCard(
-                title: "Speed",
-                icon: Icons.speed,
-                color: Colors.tealAccent,
-               screen: ConverterSpeedScreen(),
-            ),
-            _CategoryCard(
-                title: "Storage",
-                icon: Icons.storage,
-                color: Colors.red,
-                screen: ConverterDigitalScreen(),
-            ),
-            _CategoryCard(
-                title: "Time",
-                icon: Icons.timer,
-                color: Colors.brown,
-                screen: TimeConverterScreen(),
-            ),
-            _CategoryCard(
-                title: "Area",
-                icon: Icons.crop_square,
-                color: Colors.lime,
-                screen: ConverterAreaScreen(),
-            ),
-            _CategoryCard(
-                title: "Volume",
-                icon: Icons.local_drink,
-                color: Colors.blueGrey,
-                screen: ConverterVolumeScreen(),
-            ),
-            _CategoryCard(
-                title: "Pressure",
-                icon: Icons.compress,
-                color: Colors.pinkAccent,
-                screen: ConverterPressureScreen()
-            ),
-            _CategoryCard(
-                title: "Energy",
-                icon: Icons.energy_savings_leaf,
-                color: Colors.lime,
-                screen: ConverterEnergyScreen(),
-            ),
-            _CategoryCard(
-                title: "Power",
-                icon: Icons.power,
-                color: Colors.blue,
-                screen: ConverterPowerScreen(),
-            ),
-            _CategoryCard(
-                title: "Angle",
-                icon: Icons.change_history,
-                color: Colors.green,
-                screen: ConverterAngleScreen(),
-            ),
-            _CategoryCard(
-                title: "Fuel Economy",
-                icon: Icons.local_gas_station,
-                color: Colors.indigo,
-                screen: ConverterFuelScreen(),
-            ),
-            _CategoryCard(
-                title: "Frequency",
-                icon: Icons.graphic_eq,
-                color: Colors.pink,
-                screen: ConverterFrequencyScreen(),
-            ),
-            _CategoryCard(
-                title: "Force",
-                icon: Icons.sports_martial_arts,
-                color: Colors.yellowAccent,
-                screen: ConverterForceScreen()
-            ),
-            _CategoryCard(
-                title: "Torque",
-                icon: Icons.settings,
-                color: Colors.amberAccent,
-                screen: ConverterTorqueScreen(),
-            ),
-            _CategoryCard(
-                title: "Density",
-                icon: Icons.layers, 
-                color: Colors.deepOrange,
-                screen: DensityConverterScreen(),
-            ),
-            _CategoryCard(
-                title: "Flow Rate",
-                icon: Icons.water_drop,
-                color: Colors.tealAccent,
-                screen: FlowRateConverterScreen(),
-            ),
-            _CategoryCard(
-                title: "Illuminance",
-                icon: Icons.wb_sunny,
-                color: Colors.red,
-                screen: ConverterIlluminanceScreen()
-            ),
-            _CategoryCard(
-                title: "Radiation",
-                icon: Icons.radar,
-                color: Colors.amber,
-                screen: RadiationScreen(),
-            ),
-            _CategoryCard(
-                title: "Cooking",
-                icon: Icons.restaurant,
-                color: Colors.purpleAccent,
-                screen: ConverterCookingScreen(),
-            ),
-            _CategoryCard(
-                title: "Trigonometry",
-                icon: Icons.architecture,
-                color: Colors.tealAccent,
-                screen: TrigonometryScreen(),
-            ),
-            _CategoryCard(
-                title: "Electric",
-                icon: Icons.electrical_services,
-                color: Colors.greenAccent,
-                screen: ConverterElectricScreen(),
-            ),
-            _CategoryCard(
-                title: "Typography",
-                icon: Icons.text_fields,
-                color: Colors.lightGreen,
-                screen: ConverterTypographyScreen(),
-            ),
-            _CategoryCard(
-                title: "Numeral",
-                icon: Icons.tag,
-                color: Colors.deepPurpleAccent,
-                screen: ConverterNumeralScreen()
-            ),
-            _CategoryCard(
-                title: "Image Converter",
-                icon: Icons.image,
-                color: Colors.lightGreen,
-                screen: ConverterImageScreen(),
-            ),
-            _CategoryCard(
-                title: "Document Converter",
-                icon: Icons.document_scanner,
-                color: Colors.lightBlue,
-                requiresInternet: true,
-                screen: ConverterDocumentFormatScreen(),
-            )
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -340,6 +353,56 @@ class _CategoryCard extends StatelessWidget {
             child: const Text("OK", style: TextStyle(color: Colors.orange)),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _LargeCategoryCard extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final Color color;
+
+  const _LargeCategoryCard({
+    required this.title,
+    required this.icon,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 100,
+      decoration: BoxDecoration(
+        color: const Color(0xFF12121A),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color.withOpacity(0.6), width: 1.2),
+        boxShadow: [
+          BoxShadow(color: color.withOpacity(0.25), blurRadius: 20, spreadRadius: 1),
+        ],
+      ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("$title is under development")),
+          );
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: color, size: 42),
+            const SizedBox(width: 20),
+            Text(
+              title,
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.9),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

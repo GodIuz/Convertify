@@ -1,9 +1,9 @@
-enum DocumentFormat {
-  pdf,
-  docx,
-  xlsx,
-  pptx,
-  txt,
-  html,
-  odt
+enum DocumentFormat{
+docx,
+doc,
+pdf,
+txt,
+rtf,
+odt,
+md,
 }

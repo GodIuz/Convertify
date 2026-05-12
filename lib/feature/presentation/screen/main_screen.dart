@@ -1,6 +1,6 @@
-import 'package:convertify/feature/presentation/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:convertify/feature/presentation/screen/home_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -30,57 +30,30 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  final List<Widget> _screens = [
+    const HomeScreen(),
+    const SearchScreenTemplate(),
+    const SettingsScreen(),
+    const UpgradeProScreen(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return Scaffold(
-        backgroundColor: const Color(0xFF0B0B10),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/images/splash_logo.png',
-                width: 120,
-              ),
-              const SizedBox(height: 25),
-              const Text(
-                "Convertify",
-                style: TextStyle(
-                  color: Colors.cyanAccent,
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 4,
-                   fontFamily: 'Orbitron',
-                ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                "ALL-IN-ONE UNIT CONVERTER",
-                style: TextStyle(
-                  color: Colors.white24,
-                  fontSize: 10,
-                  letterSpacing: 2,
-                ),
-              ),
-              const SizedBox(height: 40),
-              const SizedBox(
-                width: 24,
-                height: 24,
-                child: CircularProgressIndicator(
-                  color: Colors.cyanAccent,
-                  strokeWidth: 2,
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+      return _buildLoadingScreen();
     }
+
     return Scaffold(
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _screens,
+      backgroundColor: const Color(0xFF0B0B10),
+      body: Column(
+        children: [
+          Expanded(
+            child: IndexedStack(
+              index: _selectedIndex,
+              children: _screens,
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: _buildBottomBar(),
     );
@@ -91,11 +64,7 @@ class _MainScreenState extends State<MainScreen> {
       data: NavigationBarThemeData(
         indicatorColor: Colors.cyanAccent.withValues(alpha: 0.2),
         labelTextStyle: WidgetStateProperty.all(
-          const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-              color: Colors.white70
-          ),
+          const TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.white70),
         ),
       ),
       child: NavigationBar(
@@ -103,6 +72,7 @@ class _MainScreenState extends State<MainScreen> {
         onDestinationSelected: (index) => setState(() => _selectedIndex = index),
         backgroundColor: const Color(0xFF1A1A25),
         elevation: 10,
+        height: 70,
         destinations: const [
           NavigationDestination(
             selectedIcon: Icon(Icons.swap_horiz, color: Colors.cyanAccent),
@@ -116,8 +86,8 @@ class _MainScreenState extends State<MainScreen> {
           ),
           NavigationDestination(
             selectedIcon: Icon(Icons.settings, color: Colors.cyanAccent),
-            icon: Icon(Icons.settings, color: Colors.white54),
-            label: 'Settings'
+            icon: Icon(Icons.settings_outlined, color: Colors.white54),
+            label: 'Settings',
           ),
           NavigationDestination(
             selectedIcon: Icon(Icons.auto_awesome, color: Colors.amber),
@@ -129,17 +99,52 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  final List<Widget> _screens = [
-    const HomeScreen(),
-    const Center(
-        child: Text("Search Coming Soon", style: TextStyle(color: Colors.white38))
-    ),
-    const Center(
-        child: Text("Settings Comming Soon", style:TextStyle(color:Colors.white38))
-    ),
-    const Center(
-        child: Text("Upgrade to Pro", style: TextStyle(color: Colors.white38))
-    ),
+  Widget _buildLoadingScreen() {
+    return Scaffold(
+      backgroundColor: const Color(0xFF0B0B10),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/images/splash_logo.png', width: 120),
+            const SizedBox(height: 25),
+            const Text(
+              "Convertify",
+              style: TextStyle(
+                color: Colors.cyanAccent,
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 4,
+                fontFamily: 'Orbitron',
+              ),
+            ),
+            const SizedBox(height: 40),
+            const SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(color: Colors.cyanAccent, strokeWidth: 2),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
-  ];
+class SearchScreenTemplate extends StatelessWidget {
+  const SearchScreenTemplate({super.key});
+  @override
+  Widget build(BuildContext context) => const Center(child: Text("Search Global Units", style: TextStyle(color: Colors.white38, fontWeight: FontWeight.bold)));
+}
+
+class UpgradeProScreen extends StatelessWidget {
+  const UpgradeProScreen({super.key});
+  @override
+  Widget build(BuildContext context) => const Center(child: Text("Go Ad-Free & Unlimited", style: TextStyle(color: Colors.white38, fontWeight: FontWeight.bold)));
+}
+
+class SettingsScreen extends StatelessWidget{
+  const SettingsScreen({super.key});
+  @override
+  Widget build(BuildContext context) => const Center(child: Text("Settings", style: TextStyle(color: Colors.white38, fontWeight: FontWeight.bold)));
 }

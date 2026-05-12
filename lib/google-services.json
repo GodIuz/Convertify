@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "625852659970",
+    "project_id": "convertify-c0f10",
+    "storage_bucket": "convertify-c0f10.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:625852659970:android:1fb1e462d7b9ba42222a1b",
+        "android_client_info": {
+          "package_name": "com.vira.convertify"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmnTcn3NPczD8m8JvkCrDVBQ0j8jaNFpY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
