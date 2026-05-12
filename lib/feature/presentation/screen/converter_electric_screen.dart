@@ -143,7 +143,7 @@ class _ConverterElectricScreenState extends State<ConverterElectricScreen> {
               ),
             ),
             const SizedBox(height: 30),
-            const Center(child: Text("CONVERTIFY v1.0", style: TextStyle(color: Colors.white10, fontSize: 10))),
+            const Center(child: Text("TOTAL UNIT v1.0", style: TextStyle(color: Colors.white10, fontSize: 10))),
           ],
         ),
       ),

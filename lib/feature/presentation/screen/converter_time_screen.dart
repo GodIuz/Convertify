@@ -56,7 +56,7 @@ class _TimeConverterScreenState extends State<TimeConverterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const timePurple = Color(0xFFD500F9); // Accent color για τον Χρόνο
+    const timePurple = Color(0xFFD500F9);
 
     return Scaffold(
       backgroundColor: const Color(0xFF0B0B10),
@@ -80,8 +80,6 @@ class _TimeConverterScreenState extends State<TimeConverterScreen> {
           children: [
             const Text("Value to Convert", style: TextStyle(color: Colors.white38, fontSize: 12)),
             const SizedBox(height: 8),
-
-            // 1. Μεγάλο Input Box
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
@@ -104,8 +102,6 @@ class _TimeConverterScreenState extends State<TimeConverterScreen> {
             ),
 
             const SizedBox(height: 25),
-
-            // 2. Επιλογείς Μονάδων & Swap Button
             Row(
               children: [
                 Expanded(child: _buildDropdownColumn("From", _fromUnit, (val) {
@@ -136,8 +132,6 @@ class _TimeConverterScreenState extends State<TimeConverterScreen> {
             ),
 
             const SizedBox(height: 40),
-
-            // 3. Κεντρική Κάρτα Αποτελέσματος
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 45),
@@ -180,7 +174,7 @@ class _TimeConverterScreenState extends State<TimeConverterScreen> {
             const SizedBox(height: 30),
             const Center(
               child: Text(
-                "CONVERTIFY v1.0",
+                "TOTAL UNIT v1.0",
                 style: TextStyle(color: Colors.white10, fontSize: 10, letterSpacing: 1),
               ),
             ),

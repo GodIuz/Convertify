@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:convertify/services/consent_service.dart';
-import 'package:convertify/feature/presentation/screen/main_screen.dart';
+import 'package:totalUnit/services/consent_service.dart';
+import 'package:totalUnit/feature/presentation/screen/main_screen.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Convertify',
+      title: 'TOTAL UNIT',
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: const Color(0xFF0B0B10),

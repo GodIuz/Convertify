@@ -51,7 +51,6 @@ class _RadiationScreenState extends State<RadiationScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            // 1. Input Box
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -67,8 +66,6 @@ class _RadiationScreenState extends State<RadiationScreen> {
               ),
             ),
             const SizedBox(height: 20),
-
-            // 2. Dropdowns & Swap
             Row(
               children: [
                 Expanded(child: _buildDropdown(fromUnit, (val) {
@@ -95,8 +92,6 @@ class _RadiationScreenState extends State<RadiationScreen> {
               ],
             ),
             const SizedBox(height: 30),
-
-            // 3. Large Result Card
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 40),

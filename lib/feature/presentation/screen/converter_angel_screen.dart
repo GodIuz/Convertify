@@ -124,8 +124,6 @@ class _ConverterAngleScreenState extends State<ConverterAngleScreen> {
             ),
 
             const SizedBox(height: 40),
-
-            // 3. Μεγάλη Κάρτα Αποτελέσματος
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 45),
@@ -164,7 +162,7 @@ class _ConverterAngleScreenState extends State<ConverterAngleScreen> {
             const SizedBox(height: 20),
             const Center(
               child: Text(
-                "CONVERTIFY v1.0",
+                "TOTAL UNIT v1.0",
                 style: TextStyle(color: Colors.white10, fontSize: 10, letterSpacing: 1),
               ),
             ),

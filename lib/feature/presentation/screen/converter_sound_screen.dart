@@ -68,7 +68,6 @@ class _ConverterSoundScreenState extends State<ConverterSoundScreen> {
         padding: const EdgeInsets.all(24.0),
         child: Column(
           children: [
-            // Dropzone
             GestureDetector(
               onTap: _pickAudio,
               child: Container(
