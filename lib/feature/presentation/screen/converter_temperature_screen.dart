@@ -154,7 +154,7 @@ class _ConverterTemperatureScreenState extends State<ConverterTemperatureScreen>
             const SizedBox(height: 30),
             const Center(
               child: Text(
-                "CONVERTIFY v1.0",
+                "TOTAL UNIT v1.0",
                 style: TextStyle(color: Colors.white10, fontSize: 10, letterSpacing: 1),
               ),
             ),

@@ -46,7 +46,7 @@ class _ConverterFrequencyScreenState extends State<ConverterFrequencyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const freqPurple = Color(0xFF6200EA); // Accent color για τη Συχνότητα
+    const freqPurple = Color(0xFF6200EA);
 
     return Scaffold(
       backgroundColor: const Color(0xFF0B0B10),
@@ -92,10 +92,7 @@ class _ConverterFrequencyScreenState extends State<ConverterFrequencyScreen> {
                 onChanged: (_) => _convert(),
               ),
             ),
-
             const SizedBox(height: 25),
-
-            // 2. Επιλογείς Μονάδων (From -> Swap -> To)
             Row(
               children: [
                 Expanded(child: _buildDropdownColumn("From", from, (val) {
@@ -124,10 +121,7 @@ class _ConverterFrequencyScreenState extends State<ConverterFrequencyScreen> {
                 }, Colors.white24)),
               ],
             ),
-
             const SizedBox(height: 40),
-
-            // 3. Κεντρική Κάρτα Αποτελέσματος
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 45),
@@ -166,7 +160,7 @@ class _ConverterFrequencyScreenState extends State<ConverterFrequencyScreen> {
             const SizedBox(height: 30),
             const Center(
               child: Text(
-                "CONVERTIFY v1.0",
+                "TOTAL UNIT v1.0",
                 style: TextStyle(color: Colors.white10, fontSize: 10, letterSpacing: 1),
               ),
             ),

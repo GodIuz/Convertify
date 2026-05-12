@@ -83,7 +83,7 @@ class _ConverterDocumentFormatScreenState extends State<ConverterDocumentFormatS
     return Scaffold(
       backgroundColor: const Color(0xFF0B0B10),
       appBar: AppBar(
-        title: const Text("Local Doc Converter"),
+        title: const Text("Document Converter"),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -158,13 +158,13 @@ class _ConverterDocumentFormatScreenState extends State<ConverterDocumentFormatS
                 onPressed: (fileName != null && !isProcessing) ? _startConversion : null,
                 child: isProcessing
                     ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text("CONVERT LOCALLY", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                    : const Text("CONVERT", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
               ),
             ),
             const SizedBox(height: 20),
             const Center(
               child: Text(
-                "Offline conversion • No data leaves your device",
+                "TOTAL UNIT v1.0",
                 style: TextStyle(color: Colors.white24, fontSize: 11),
               ),
             )
