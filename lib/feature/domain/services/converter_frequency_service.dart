@@ -1,6 +1,5 @@
 import 'dart:math';
-
-import 'package:convertify/feature/domain/enums/frequency_unit.dart';
+import 'package:totalUnit/feature/domain/enums/frequency_unit.dart';
 
 class ConverterFrequencyService {
   static const Map<FrequencyUnit,double> freqTo ={

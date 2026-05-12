@@ -1,4 +1,4 @@
-import 'package:convertify/feature/domain/enums/digital%20_unit.dart';
+import 'package:totalUnit/feature/domain/enums/digital%20_unit.dart';
 
 extension DigitalUnitExtension on DigitalUnit{
   String get label {

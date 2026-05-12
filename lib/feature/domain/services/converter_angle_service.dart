@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:convertify/feature/domain/enums/angle_unit.dart';
+import 'package:totalUnit/feature/domain/enums/angle_unit.dart';
 
 class ConverterAngleService {
   static const Map<AngleUnit,double> degreeTo = {

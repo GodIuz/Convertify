@@ -1,4 +1,4 @@
-import 'package:convertify/feature/domain/enums/time_unit.dart';
+import 'package:totalUnit/feature/domain/enums/time_unit.dart';
 
 extension TimeUnitExtension on TimeUnit{
   String get label{

@@ -1,4 +1,4 @@
-import '../enums/temperature_unit.dart';
+import 'package:totalUnit/feature/domain/enums/temperature_unit.dart';
 
 extension TemperatureUnitExtension on TemperatureUnit {
   String get label {

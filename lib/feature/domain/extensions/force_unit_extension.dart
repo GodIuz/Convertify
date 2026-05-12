@@ -1,4 +1,4 @@
-import 'package:convertify/feature/domain/enums/force_unit.dart';
+import 'package:totalUnit/feature/domain/enums/force_unit.dart';
 
 extension  ForceUnitExtension on ForceUnit{
   String get label{

@@ -1,4 +1,4 @@
-import 'package:convertify/feature/domain/enums/torque_unit.dart';
+import 'package:totalUnit/feature/domain/enums/torque_unit.dart';
 
 class ConverterTorqueService {
   static const Map <TorqueUnit,double> torqueTo = {

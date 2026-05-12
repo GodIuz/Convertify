@@ -1,4 +1,4 @@
-import '../enums/length_unit.dart';
+import 'package:totalUnit/feature/domain/enums/length_unit.dart';
 
 extension LengthUnitExtension on LengthUnit {
 

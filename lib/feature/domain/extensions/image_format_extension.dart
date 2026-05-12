@@ -1,4 +1,4 @@
-import 'package:convertify/feature/domain/enums/image_format.dart';
+import 'package:totalUnit/feature/domain/enums/image_format.dart';
 
 extension ImageFormatExtension on ImageFormat{
   String get label{

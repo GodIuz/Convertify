@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../enums/trigonometric_unit.dart';
-import '../enums/trigonometric_category.dart';
+import 'package:totalUnit/feature/domain/enums/trigonometric_category.dart';
+import 'package:totalUnit/feature/domain/enums/trigonometric_unit.dart';
 
 extension TrigonometricUnitExtension on TrigonometricUnit {
   String get label {
@@ -56,7 +56,6 @@ extension TrigonometricUnitExtension on TrigonometricUnit {
   }
 
   TrigonometricCategory get category {
-    // index 0-5: Basic, 6-8: Inverse, 9-14: Hyperbolic, 15-20: Inverse Hyperbolic
     if (index <= 5) return TrigonometricCategory.basic;
     if (index <= 8) return TrigonometricCategory.inverse;
     if (index <= 14) return TrigonometricCategory.hyperbolic;
@@ -64,7 +63,6 @@ extension TrigonometricUnitExtension on TrigonometricUnit {
   }
 }
 
-// 2. Extension για τις κατηγορίες (TrigonometricCategory)
 extension TrigonometricCategoryExtension on TrigonometricCategory {
   String get label {
     switch (this) {

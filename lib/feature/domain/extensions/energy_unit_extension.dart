@@ -1,4 +1,4 @@
-import 'package:convertify/feature/domain/enums/energy_unit.dart';
+import 'package:totalUnit/feature/domain/enums/energy_unit.dart';
 
 extension EnergyUnitExtension on EnergyUnit{
   String get label {

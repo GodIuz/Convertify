@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image/image.dart' as img;
-import '../enums/image_format.dart';
+import 'package:totalUnit/feature/domain/enums/image_format.dart';
 
 class ConverterImageFormatService {
   Future<Uint8List?> convertImage(Uint8List inputBytes, ImageFormat targetFormat) async {

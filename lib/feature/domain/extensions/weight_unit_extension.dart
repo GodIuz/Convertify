@@ -1,4 +1,4 @@
-import 'package:convertify/feature/domain/enums/weight_unit.dart';
+import 'package:totalUnit/feature/domain/enums/weight_unit.dart';
 
 extension WeightUnitExtensions on WeightUnit{
   String get label{

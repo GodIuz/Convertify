@@ -1,4 +1,4 @@
-import 'package:convertify/feature/domain/enums/power_unit.dart';
+import 'package:totalUnit/feature/domain/enums/power_unit.dart';
 
 extension PowerUnitExtension on PowerUnit{
   String get label{

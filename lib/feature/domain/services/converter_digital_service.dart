@@ -1,4 +1,4 @@
-import '../enums/digital _unit.dart';
+import 'package:totalUnit/feature/domain/enums/digital%20_unit.dart';
 
 class ConverterDigitalService {
   static const Map<DigitalUnit, double> digitalToByte = {

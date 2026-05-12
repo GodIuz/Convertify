@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../enums/currency_unit.dart';
-import '../extensions/currency_unit_extension.dart';
+import 'package:totalUnit/feature/domain/enums/currency_unit.dart';
 
 class ConverterCurrencyService {
   static const String _apiKey = "acecfc556779dc60b6992973";
@@ -16,7 +15,7 @@ class ConverterCurrencyService {
     if (amount == 0) return 0;
 
       try {
-        final url = Uri.parse('$_baseUrl/${from.code}/${to.code}/$amount');
+        final url = Uri.parse('$_baseUrl/${CurrencyUnit.cad}/${CurrencyUnit.cad}/$amount');
         final response = await http.get(url);
 
         if (response.statusCode == 200) {

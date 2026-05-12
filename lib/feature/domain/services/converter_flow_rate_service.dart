@@ -1,4 +1,4 @@
-import 'package:convertify/feature/domain/enums/flow_rate_unit.dart';
+import 'package:totalUnit/feature/domain/enums/flow_rate_unit.dart';
 
 class ConverterFlowRateService {
   static const Map<FlowRateUnit,double> flowTo ={

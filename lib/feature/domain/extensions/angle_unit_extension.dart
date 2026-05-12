@@ -1,4 +1,4 @@
-import '../enums/angle_unit.dart';
+import 'package:totalUnit/feature/domain/enums/angle_unit.dart';
 
 extension AngleUnitExtension on AngleUnit{
   String get label{

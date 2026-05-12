@@ -1,4 +1,4 @@
-import 'package:convertify/feature/domain/enums/fuel_economy_unit.dart';
+import 'package:totalUnit/feature/domain/enums/fuel_economy_unit.dart';
 
 class ConverterFuelEconomyService {
   static const Map<FuelEconomyUnit,double> efficiency = {

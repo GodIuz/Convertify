@@ -1,4 +1,4 @@
-import 'package:convertify/feature/domain/enums/speed_unit.dart';
+import 'package:totalUnit/feature/domain/enums/speed_unit.dart';
 
 extension SpeedUnitExtensions on SpeedUnit{
   String get label {

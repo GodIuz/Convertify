@@ -1,4 +1,4 @@
-import 'package:convertify/feature/domain/enums/fuel_economy_unit.dart';
+import 'package:totalUnit/feature/domain/enums/fuel_economy_unit.dart';
 
 extension FuelEconomyUnitExtension on  FuelEconomyUnit{
   String get label{

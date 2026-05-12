@@ -1,4 +1,5 @@
-import '../enums/speed_unit.dart';
+
+import 'package:totalUnit/feature/domain/enums/speed_unit.dart';
 
 class ConverterSpeedService {
   static const Map<SpeedUnit, double> speedToMs = {

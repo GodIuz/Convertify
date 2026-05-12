@@ -1,6 +1,5 @@
 import 'dart:math';
-
-import 'package:convertify/feature/domain/enums/power_unit.dart';
+import 'package:totalUnit/feature/domain/enums/power_unit.dart';
 
 class ConverterPowerService {
   static const Map<PowerUnit,double> powerTo={

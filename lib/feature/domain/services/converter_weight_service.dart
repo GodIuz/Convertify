@@ -1,4 +1,4 @@
-import '../enums/weight_unit.dart';
+import 'package:totalUnit/feature/domain/enums/weight_unit.dart';
 
 class ConverterWeightService {
   static const Map<WeightUnit, double> weightToKilogram = {

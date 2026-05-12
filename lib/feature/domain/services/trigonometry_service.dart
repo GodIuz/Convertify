@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:convertify/feature/domain/enums/trigonometric_unit.dart';
+import 'package:totalUnit/feature/domain/enums/trigonometric_unit.dart';
 
 class TrigonometryService {
   static const double _epsilon = 1e-10;

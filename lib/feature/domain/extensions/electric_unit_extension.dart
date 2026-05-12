@@ -1,4 +1,4 @@
-import 'package:convertify/feature/domain/enums/electric_unit.dart';
+import 'package:totalUnit/feature/domain/enums/electric_unit.dart';
 
 extension ElectricUnitExtension on ElectricUnit{
   String get label{

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../core/utils/number_formatter.dart';
-import '../../domain/enums/currency_unit.dart';
-import '../../domain/extensions/currency_unit_extension.dart';
-import '../../domain/services/converter_currency_service.dart';
+import 'package:totalUnit/core/utils/number_formatter.dart';
+import 'package:totalUnit/feature/domain/enums/currency_unit.dart';
+import 'package:totalUnit/feature/domain/extensions/currency_unit_extension.dart';
+import 'package:totalUnit/feature/domain/services/converter_currency_service.dart';
+
 
 class ConverterCurrencyScreen extends StatefulWidget {
   const ConverterCurrencyScreen({super.key});
@@ -149,10 +150,7 @@ class _ConverterCurrencyScreenState extends State<ConverterCurrencyScreen> {
                 }, Colors.white24)),
               ],
             ),
-
             const SizedBox(height: 40),
-
-            // 3. Μεγάλη Κάρτα Αποτελέσματος
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 45),

@@ -1,5 +1,5 @@
-import 'package:convertify/feature/domain/enums/electric_unit.dart';
-import 'package:convertify/feature/domain/extensions/electric_unit_extension.dart';
+import 'package:totalUnit/feature/domain/enums/electric_unit.dart';
+import 'package:totalUnit/feature/domain/extensions/electric_unit_extension.dart';
 
 class ConverterElectricService {
   static const Map<ElectricUnit,double> electricalTo ={
