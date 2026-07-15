@@ -5,5 +5,9 @@ pdf,
 txt,
 rtf,
 odt,
-md,
+md;
+
+String get ext => '.$name';
+String get label => name.toUpperCase();
+String get subfolder => 'documents';
 }

@@ -15,7 +15,6 @@ dependencies:
   http: ^1.1.0
   image: ^4.5.2
   flutter_image_compress: ^2.3.0
-  ffmpeg_kit_flutter_new: ^4.1.0
   connectivity_plus: ^7.1.1
   in_app_purchase: ^3.2.0
   gal: ^2.3.2
@@ -26,9 +25,10 @@ dependencies:
   path_provider: ^2.1.2
   file_saver: ^0.2.11
   google_mobile_ads: ^8.0.0
-
+  device_info_plus: ^10.1.0
+  flutter_native_splash: any
+  permission_handler: ^12.0.1
 dev_dependencies:
-  flutter_native_splash: ^2.4.0
   flutter_launcher_icons: ^0.14.4
   flutter_test:
     sdk: flutter

@@ -2,12 +2,18 @@ import 'package:totalUnit/feature/domain/enums/video_unit.dart';
 
 extension VideoUnitExtension on VideoUnit {
   String get label {
-    if (this == VideoUnit.gp3) return "3GP";
-    return name.toUpperCase();
+    switch (this) {
+      case VideoUnit.avi: return 'AVI';
+      case VideoUnit.mp4: return 'MP4';
+      default: return 'AVI';
+    }
   }
 
   String get extension {
-    if (this == VideoUnit.gp3) return ".3gp";
-    return ".${name.toLowerCase()}";
+    switch (this) {
+      case VideoUnit.avi: return '.avi';
+      case VideoUnit.mp4: return '.mp4';
+      default: return '.avi';
+    }
   }
 }

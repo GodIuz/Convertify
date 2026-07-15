@@ -38,22 +38,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ],
             ),
           ),
-          // const SizedBox(height: 24),
-          // _buildSectionTitle("PREFERENCES"),
-          // _buildSettingsCard(
-          //   child: Column(
-          //     children: [
-          //       _buildNavigationTile(
-          //         title: "Language",
-          //         subtitle: _selectedLanguage,
-          //         icon: Icons.language,
-          //         onTap: () {
-          //           // Εδώ μπορείς να ανοίξεις ένα BottomSheet για επιλογή γλώσσας
-          //         },
-          //       ),
-          //     ],
-          //   ),
-          // ),
           const SizedBox(height: 24),
           _buildSectionTitle("ABOUT"),
           _buildSettingsCard(

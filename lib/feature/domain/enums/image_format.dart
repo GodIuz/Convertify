@@ -4,5 +4,9 @@ enum ImageFormat {
   webp,
   gif,
   bmp,
-  tiff
+  tiff;
+
+  String get ext => '.$name';
+  String get label => name.toUpperCase();
+  String get subfolder => 'images';
 }
